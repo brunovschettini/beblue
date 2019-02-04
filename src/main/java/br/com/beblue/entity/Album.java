@@ -1,0 +1,114 @@
+package br.com.beblue.entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class Album implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 255, nullable = false, unique = true)
+    private String spotify_id;
+
+    @Column(length = 255, nullable = false, unique = true)
+    private String name;
+
+    @JoinColumn
+    @ManyToOne
+    private Artist artist;
+
+    @JoinColumn
+    @ManyToOne
+    private Genre genre;
+
+    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
+    private BigDecimal price;
+
+    @Column(length = 255, nullable = false, unique = true)
+    private String image;
+
+    public Album() {
+        this.id = null;
+        this.spotify_id = "";
+        this.name = "";
+        this.artist = null;
+        this.genre = null;
+        this.image = null;
+    }
+
+    public Album(Long id, String spotify_id, String name, Artist artist, Genre genre, String image) {
+        this.id = id;
+        this.spotify_id = spotify_id;
+        this.name = name;
+        this.artist = artist;
+        this.genre = genre;
+        this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSpotify_id() {
+        return spotify_id;
+    }
+
+    public void setSpotify_id(String spotify_id) {
+        this.spotify_id = spotify_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+}

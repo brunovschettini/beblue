@@ -1,43 +1,42 @@
-package br.com.beblue.ws;
+package br.com.beblue.dao;
 
-import br.com.beblue.utils.NotifyResponse;
-import com.google.gson.Gson;
-import com.wrapper.spotify.SpotifyApi;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import br.com.beblue.conn.Conn;
+import br.com.beblue.entity.Genre;
+import java.util.List;
+import javax.persistence.Query;
 
-// https://github.com/thelinmichael/spotify-web-api-java
-@Path("/disks")
-public class DisksWS {
+public class GenreDao extends Conn {
 
-    @Context
-    HttpHeaders headers;
+    public List<Genre> findAll() {
+        Query query = getEntityManager().createQuery("SELECT G FROM Genre G ORDER BY G.name ASC");
+        return query.getResultList();
+    }
 
-    @GET
-    @Path("/genre/{genre}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response importCities(@PathParam("genre") String genre) {
-        Gson gson = new Gson();
-        NotifyResponse notifyResponse = new NotifyResponse();
-        notifyResponse.setObject("OK");
+    public Genre findByName(String name) {
+        Query query = getEntityManager().createQuery("SELECT G FROM Genre G WHERE G.name = :name");
+        query.setParameter("name", name);
+        if (!query.getResultList().isEmpty()) {
+            return (Genre) query.getSingleResult();
+        }
+        return null;
+    }
 
-        SpotifyApi spotifyApi = new SpotifyApi.Builder()
-                .setClientId("0a487071817e4899813ed05116175fa3")
-                .setClientSecret("fb100b74e7bd43cca5dc4d62872ce62b")
-                // .setRedirectUri("<your_redirect_uri>")
-                .build();
-        
-        String token = spotifyApi.getAccessToken();
-        
-        
+    public void store(String name) {
+        if (findByName(name) == null) {
+            getEntityManager().getTransaction().begin();
+            try {
+                Genre genre = new Genre();
+                genre.setName(name);
+                getEntityManager().persist(genre);
+                getEntityManager().flush();
+                getEntityManager().getTransaction().commit();
+            } catch (Exception e) {
+                getEntityManager().getTransaction().rollback();
 
-        return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+            }
+
+        }
+
     }
 
 }
