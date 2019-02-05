@@ -1,4 +1,4 @@
-package br.com.beblue.apis;
+package br.com.beblue.api;
 
 import br.com.beblue.auth.SpotifyAuthorization;
 import static br.com.beblue.auth.SpotifyAuthorization.spotifyApi;

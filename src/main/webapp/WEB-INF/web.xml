@@ -42,7 +42,7 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>br.com.beblue.apis</param-value>
+            <param-value>br.com.beblue.api</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>

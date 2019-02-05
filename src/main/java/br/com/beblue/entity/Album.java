@@ -2,6 +2,7 @@ package br.com.beblue.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Album implements Serializable {
@@ -20,7 +23,7 @@ public class Album implements Serializable {
     @Column(length = 255, nullable = false, unique = true)
     private String spotify_id;
 
-    @Column(length = 255, nullable = false, unique = true)
+    @Column(length = 255, nullable = false)
     private String name;
 
     @JoinColumn
@@ -34,8 +37,9 @@ public class Album implements Serializable {
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal price;
 
-    @Column(length = 255, nullable = false, unique = true)
-    private String image;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created_at;
 
     public Album() {
         this.id = null;
@@ -43,16 +47,16 @@ public class Album implements Serializable {
         this.name = "";
         this.artist = null;
         this.genre = null;
-        this.image = null;
+        this.created_at = new Date();
     }
 
-    public Album(Long id, String spotify_id, String name, Artist artist, Genre genre, String image) {
+    public Album(Long id, String spotify_id, String name, Artist artist, Genre genre, Date created_at) {
         this.id = id;
         this.spotify_id = spotify_id;
         this.name = name;
         this.artist = artist;
         this.genre = genre;
-        this.image = image;
+        this.created_at = created_at;
     }
 
     public Long getId() {
@@ -103,12 +107,12 @@ public class Album implements Serializable {
         this.price = price;
     }
 
-    public String getImage() {
-        return image;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
 }

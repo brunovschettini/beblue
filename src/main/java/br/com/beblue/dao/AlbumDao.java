@@ -2,7 +2,6 @@ package br.com.beblue.dao;
 
 import br.com.beblue.conn.Conn;
 import br.com.beblue.entity.Album;
-import br.com.beblue.entity.Genre;
 import java.util.List;
 import javax.persistence.Query;
 
@@ -15,6 +14,12 @@ public class AlbumDao extends Conn {
         return query.getResultList();
     }
 
+    public Album findBySpotifyId(String spotify_id) {
+        Query query = getEntityManager().createQuery("SELECT A FROM Album A WHERE A.spotify_id = :spotify_id ORDER BY A.name ASC");
+        query.setParameter("spotify_id", spotify_id);
+        return (Album) query.getSingleResult();
+    }
+
     public void store(Album album) {
         getEntityManager().getTransaction().begin();
         try {
@@ -25,7 +30,6 @@ public class AlbumDao extends Conn {
             getEntityManager().getTransaction().rollback();
 
         }
-
     }
 
 }

@@ -1,6 +1,6 @@
 package br.com.beblue.tests;
 
-import br.com.beblue.apis.GenresApi;
+import br.com.beblue.api.GenresApi;
 import org.junit.Assert;
 import org.junit.Test;
 
