@@ -3,16 +3,15 @@
         <action>
             <actionName>run</actionName>
             <packagings>
-                <packaging>war</packaging>
-                <packaging>ear</packaging>
-                <packaging>ejb</packaging>
+                <packaging>jar</packaging>
             </packagings>
             <goals>
-                <goal>package</goal>
-                
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <netbeans.deploy>true</netbeans.deploy>
+                <exec.args>-classpath %classpath beblue.io.BeblueApplication</exec.args>
+                <exec.executable>java</exec.executable>
             </properties>
         </action>
     </actions>
