@@ -1,5 +1,6 @@
 package beblue.io.model;
- 
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
@@ -13,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Album   {
+public class Album implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

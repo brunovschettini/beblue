@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @RestController
-public class AlbumResource {
+public class OrderResource {
 
     @Autowired
     GenreRepository genreRepository;

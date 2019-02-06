@@ -20,9 +20,9 @@ public class GenreResource {
     @RequestMapping(value = "/genres", method = RequestMethod.GET)
     public ResponseEntity<List<Genre>> genres() {
 
-        GenreHelper genreHelper = new GenreHelper();
+        GenreHelper genreHelper = new GenreHelper(genreRepository);
 
-        return new ResponseEntity(genreHelper.loadGenre(), HttpStatus.OK);
+        return new ResponseEntity<List<Genre>>(genreHelper.loadGenre(), HttpStatus.OK);
     }
 
 }

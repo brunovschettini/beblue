@@ -1,20 +1,21 @@
 package beblue.io.repository;
 
-import beblue.io.model.Album;
+import beblue.io.model.Order;
+import beblue.io.model.OrderItems;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface AlbumRepository extends JpaRepository<Album, Long> {
+public interface OrderItemsRepository extends JpaRepository<Order, Long> {
 //
 //    // Com essa médoto consigo realizar queries pelo parâmetro que eu quiser
 //    Album findByName(String name);
 //
     @Query("SELECT A FROM Album A WHERE A.id = ?1")
-    Album findByCode(Long id);
+    Order findByCode(Long id);
 
     @Query("SELECT A FROM Album A WHERE A.spotify_id = ?1")
-    Album findBySpotify_id(String spotify_id);
+    OrderItems findBySpotify_id(String spotify_id);
 
 //
 //    // Com essa médoto consigo realizar queries pelo parâmetro que eu quiser com a query
