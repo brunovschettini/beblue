@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import beblue.io.model.OrdersItems;
+import beblue.io.model.WeeksSales;
 import beblue.io.repository.OrderItemsRepository;
 import beblue.io.utils.Result;
 import java.math.BigDecimal;
@@ -20,17 +21,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.hibernate.criterion.Order;
-import org.springframework.web.bind.annotation.RequestParam;
+import javax.persistence.Query;
 
 @RestController
 public class OrderResource {
 
     @Autowired
-    OrderItemsRepository oir;
+    private OrderItemsRepository oir;
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager entityManager;
 
     @RequestMapping(value = "/order/id/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> find_id(@PathVariable("id") Long id) {
@@ -49,8 +49,8 @@ public class OrderResource {
         return new ResponseEntity<>(ois, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/add/{albums_ids}", method = RequestMethod.POST)
-    public ResponseEntity<?> store(@RequestParam("albums_ids") String albums_ids) {
+    @RequestMapping(value = "/order/add/{albums_ids}", method = RequestMethod.GET)
+    public ResponseEntity<?> store(@PathVariable("albums_ids") String albums_ids) {
         Result result = new Result();
         if (albums_ids == null || albums_ids.isEmpty()) {
             result.setStatus_code(0);
@@ -73,41 +73,42 @@ public class OrderResource {
         }
         List<OrdersItems> ois = new ArrayList<>();
         Orders orders = new Orders();
+        EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
         em.getTransaction().begin();
         try {
             em.persist(orders);
         } catch (Exception e) {
             result.setStatus_code(0);
             result.setStatus("e->" + e.getMessage());
-            em.getTransaction().rollback();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         int weekday = new Date().getDay();
         for (Long album_id : listAlbumId) {
-            Album album = (Album) em.find(Album.class, album_id);
+            Album album = (Album) entityManager.find(Album.class, album_id);
             if (album == null) {
                 result.setStatus_code(0);
                 result.setStatus("album not found!");
-                em.getTransaction().rollback();
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
+            Query query = entityManager.createQuery("SELECT WS FROM WeeksSales WS WHERE WS.genre.id = :genre_id AND WS.weeks.number_day = :number_day");
+            entityManager.setProperty("genre_id", album.getGenre().getId());
+            entityManager.setProperty("number_day", weekday);
+            WeeksSales ws = (WeeksSales) query.getSingleResult();
             OrdersItems oi = new OrdersItems();
             oi.setAlbum(album);
             oi.setOrders(orders);
-            oi.setCashback_percent_log(BigDecimal.ZERO);
-            oi.setTotal(album.getPrice());
+            oi.setCashback_percent_log(ws.getPercent());
+            double total = album.getPrice().doubleValue() - ((album.getPrice().doubleValue() * ws.getPercent().doubleValue()) / 100);
+            oi.setOriginal_price(album.getPrice());
+            oi.setTotal(new BigDecimal(total));
             try {
-                em.persist(oi);
+                entityManager.persist(oi);
             } catch (Exception e) {
                 result.setStatus_code(0);
                 result.setStatus("e->" + e.getMessage());
-                em.getTransaction().rollback();
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
-
         }
-        em.flush();
-        em.getTransaction().commit();
         result.setResult(ois);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
