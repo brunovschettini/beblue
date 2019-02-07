@@ -20,6 +20,9 @@ public class Weeks implements Serializable {
     @Column(nullable = false)
     private Integer number_day;
 
+    public Weeks() {
+    }
+
     public Weeks(Long id, String name, Integer number_day) {
         this.id = id;
         this.name = name;

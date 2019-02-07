@@ -22,24 +22,27 @@ import beblue.io.repository.AlbumRepository;
 import beblue.io.repository.ArtistRepository;
 import beblue.io.repository.GenreRepository;
 import beblue.io.repository.WeeksRepository;
+import beblue.io.repository.WeeksSaleRepository;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.EntityManager;
-import org.springframework.data.annotation.Persistent;
 
 @Component
 public class DataInitializr implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Persistent
-    private EntityManager em;
     @Autowired
     private GenreRepository genreRepository;
+
     @Autowired
     private AlbumRepository albumRepository;
+
     @Autowired
     private ArtistRepository artistRepository;
+
     @Autowired
     private WeeksRepository weeksRepository;
+
+    @Autowired
+    private WeeksSaleRepository weeksSaleRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -47,15 +50,17 @@ public class DataInitializr implements ApplicationListener<ContextRefreshedEvent
         try {
             SpotifyAuthorization.loadCredentialsSync();
 
-            // ADICIONA SEMANAS
+            // Add weeks
             WeeksHelper weeksHelper = new WeeksHelper(weeksRepository);
             weeksHelper.load();
 
-            // ADICIONA PROMOÇÃO DA SEMANA + GÊNERO
-            loadWeekesSales();
-
+            // Add genre
             GenreHelper genreHelper = new GenreHelper(genreRepository);
             genreHelper.loadGenre();
+
+            // Add sales week
+            loadWeekesSales();
+
             AlbumHelper albumHelper = new AlbumHelper(genreRepository, albumRepository, artistRepository);
             albumHelper.storesSpotifyAlbums();
         } catch (IOException | SpotifyWebApiException ex) {
@@ -105,7 +110,7 @@ public class DataInitializr implements ApplicationListener<ContextRefreshedEvent
         Weeks w = weeksRepository.findByNumber_day(weekday);
         Genre g = genreRepository.findByName(genre);
         WeeksSale weeksSale = new WeeksSale(null, w, g, percent, new Date());
-        em.persist(genre);
+        weeksSaleRepository.save(null);
     }
 
 }

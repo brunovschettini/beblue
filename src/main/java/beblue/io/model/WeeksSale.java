@@ -1,10 +1,8 @@
 package beblue.io.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Column; 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class WeeksSale implements Serializable {
+public class WeeksSale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +32,14 @@ public class WeeksSale implements Serializable {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
+
+    public WeeksSale() {
+        this.id = null;
+        this.weeks = null;
+        this.genre = null;
+        this.percent = BigDecimal.ZERO;
+        this.created_at = new Date();
+    }
 
     public WeeksSale(Long id, Weeks weeks, Genre genre, BigDecimal percent, Date created_at) {
         this.id = id;

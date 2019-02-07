@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import beblue.io.model.Artist;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     @Query("SELECT A FROM Artist A WHERE A.name = ?1 AND A.spotify_id = ?2")

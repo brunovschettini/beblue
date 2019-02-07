@@ -106,6 +106,7 @@ public class OrderResource {
             }
 
         }
+        em.flush();
         em.getTransaction().commit();
         result.setResult(ois);
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -1,9 +1,12 @@
 package beblue.io.repository;
 
-import beblue.io.model.Weeks;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface WeeksSaleRepository extends JpaRepository<Weeks, Long> {
+@Repository
+public interface WeeksSaleRepository extends JpaRepository<WeeksRepository, Long> {
+
+    
 
 }
