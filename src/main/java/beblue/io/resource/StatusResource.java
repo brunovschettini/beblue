@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatusResource {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public synchronized ResponseEntity<Object> active() {
-        return new ResponseEntity<Object>(HttpStatus.OK);
+    public synchronized ResponseEntity<?> active() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
