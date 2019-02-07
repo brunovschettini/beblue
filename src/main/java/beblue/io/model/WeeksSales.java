@@ -1,39 +1,41 @@
 package beblue.io.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Column; 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class WeeksSale {
+public class WeeksSales implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn
-    @ManyToOne
+    @OneToOne
     private Weeks weeks;
 
     @JoinColumn
-    @ManyToOne
+    @OneToOne
     private Genre genre;
 
-    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(3,2) DEFAULT 0")
+    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal percent;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    public WeeksSale() {
+    public WeeksSales() {
         this.id = null;
         this.weeks = null;
         this.genre = null;
@@ -41,7 +43,7 @@ public class WeeksSale {
         this.created_at = new Date();
     }
 
-    public WeeksSale(Long id, Weeks weeks, Genre genre, BigDecimal percent, Date created_at) {
+    public WeeksSales(Long id, Weeks weeks, Genre genre, BigDecimal percent, Date created_at) {
         this.id = id;
         this.weeks = weeks;
         this.genre = genre;

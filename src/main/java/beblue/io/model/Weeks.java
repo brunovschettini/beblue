@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Weeks implements Serializable {
@@ -14,13 +15,18 @@ public class Weeks implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255, nullable = false, columnDefinition = "varchar default ''")
+    @Column(length = 255, nullable = false)
     private String name;
 
     @Column(nullable = false)
     private Integer number_day;
+    @OneToOne(mappedBy = "weeks")
+    private WeeksSales weeksSales;
 
     public Weeks() {
+        this.id = null;
+        this.name = "";
+        this.number_day = null;
     }
 
     public Weeks(Long id, String name, Integer number_day) {
