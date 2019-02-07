@@ -10,11 +10,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //    // Com essa médoto consigo realizar queries pelo parâmetro que eu quiser
 //    Album findByName(String name);
 //
-    @Query("SELECT A FROM Album A WHERE A.id = ?1")
-    Order findByCode(Long id);
-
-    @Query("SELECT A FROM Album A WHERE A.spotify_id = ?1")
-    Order findBySpotify_id(String spotify_id);
+//    @Query("SELECT A FROM Album A WHERE A.id = ?1")
+//    Order findByCode(Long id);
+//
+//    @Query("SELECT A FROM Album A WHERE A.spotify_id = ?1")
+//    Order findBySpotify_id(String spotify_id);
 
 //
 //    // Com essa médoto consigo realizar queries pelo parâmetro que eu quiser com a query

@@ -65,7 +65,7 @@ public class AlbumResource {
     }
 
     @RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Album> spotify_id(@PathVariable("id") Long id) {
+    public ResponseEntity<Album> id(@PathVariable("id") Long id) {
         if (id == null) {
             return new ResponseEntity<Album>(new Album(), HttpStatus.OK);
         }
