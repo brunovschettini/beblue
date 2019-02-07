@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class OrderItems implements Serializable {
+public class OrdersItems implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,37 +22,42 @@ public class OrderItems implements Serializable {
 
     @JoinColumn
     @ManyToOne
-    private Order order;
+    private Orders orders;
 
     @JoinColumn
     @ManyToOne
     private Album album;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
-    private BigDecimal total;
+    private BigDecimal cashback_percent_log;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
-    private BigDecimal cashback_percent_log;
+    private BigDecimal original_price;
+
+    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
+    private BigDecimal total;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    public OrderItems() {
+    public OrdersItems() {
         this.id = null;
-        this.order = null;
+        this.orders = null;
         this.album = null;
-        this.total = BigDecimal.ZERO;
+        this.original_price = BigDecimal.ZERO;
         this.cashback_percent_log = BigDecimal.ZERO;
+        this.total = BigDecimal.ZERO;
         this.created_at = new Date();
     }
 
-    public OrderItems(Long id, Order order, Album album, BigDecimal total, BigDecimal cashback_percent_log, Date created_at) {
+    public OrdersItems(Long id, Orders orders, Album album, BigDecimal original_price, BigDecimal cashback_percent_log, BigDecimal total, Date created_at) {
         this.id = id;
-        this.order = order;
+        this.orders = orders;
         this.album = album;
-        this.total = total;
+        this.original_price = original_price;
         this.cashback_percent_log = cashback_percent_log;
+        this.total = total;
         this.created_at = created_at;
     }
 
@@ -64,12 +69,12 @@ public class OrderItems implements Serializable {
         this.id = id;
     }
 
-    public Order getOrder() {
-        return order;
+    public Orders getOrders() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 
     public Album getAlbum() {
@@ -102,6 +107,14 @@ public class OrderItems implements Serializable {
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
+    }
+
+    public BigDecimal getOriginal_price() {
+        return original_price;
+    }
+
+    public void setOriginal_price(BigDecimal original_price) {
+        this.original_price = original_price;
     }
 
 }

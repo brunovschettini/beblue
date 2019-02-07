@@ -11,7 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Order implements Serializable {
+public class Orders implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +21,12 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    public Order() {
+    public Orders() {
         this.id = null;
         this.created_at = new Date();
     }
 
-    public Order(Long id, Date created_at) {
+    public Orders(Long id, Date created_at) {
         this.id = id;
         this.created_at = created_at;
     }

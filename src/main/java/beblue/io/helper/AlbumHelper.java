@@ -50,7 +50,7 @@ public class AlbumHelper {
         for (String genreString : listGenreString) {
             Genre genre = genreRepository.findByName(genreString);
             List<SearchResult> listSearchResult = new ArrayList<>();
-            int z = 0;
+            int z = 19;
             while (z != 20) {
                 SearchItemRequest searchItemRequest = spotifyApi.searchItem(genreString, ModelObjectType.ALBUM.getType()).limit(50).offset(z).market(CountryCode.BR).build();
                 SearchResult searchResults = searchItemRequest.execute();
