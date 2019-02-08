@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+// @RequestMapping(path="/api")
 public class StatusResource {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)

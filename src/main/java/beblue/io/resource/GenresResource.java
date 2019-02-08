@@ -1,7 +1,6 @@
 package beblue.io.resource;
 
 import beblue.io.helper.GenreHelper;
-import beblue.io.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import beblue.io.repository.GenresRepository;
 
 @RestController
+// @RequestMapping(path="/api")
 public class GenresResource {
 
     @Autowired

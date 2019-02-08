@@ -22,6 +22,7 @@ import beblue.io.repository.ArtistsRepository;
 import beblue.io.repository.GenresRepository;
 
 @RestController
+// @RequestMapping(path="/api")
 public class AlbumsResource {
 
     @Autowired
@@ -62,7 +63,7 @@ public class AlbumsResource {
         }
         List<Albums> listAlbum = new ArrayList();
         if (name.toLowerCase().equals("mpb") || name.toLowerCase().equals("rock") || name.toLowerCase().equals("pop") || name.toLowerCase().equals("classic")) {
-            Query q = em.createNativeQuery("SELECT A.* FROM album A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Albums.class);
+            Query q = em.createNativeQuery("SELECT A.* FROM albums A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Albums.class);
             listAlbum = q.getResultList();
             if (listAlbum.isEmpty()) {
                 result.setStatus("empty albums!");

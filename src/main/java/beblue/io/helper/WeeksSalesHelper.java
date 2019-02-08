@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 import beblue.io.repository.GenresRepository;
 
 @Component
-public class WeeksSaleHelper {
+public class WeeksSalesHelper {
 
     public GenresRepository genreRepository;
     public WeeksRepository weeksRepository;
     public WeeksSaleRepository weeksSaleRepository;
 
-    public WeeksSaleHelper(GenresRepository genreRepository, WeeksRepository weeksRepository, WeeksSaleRepository weeksSaleRepository) {
+    public WeeksSalesHelper(GenresRepository genreRepository, WeeksRepository weeksRepository, WeeksSaleRepository weeksSaleRepository) {
         this.genreRepository = genreRepository;
         this.weeksRepository = weeksRepository;
         this.weeksSaleRepository = weeksSaleRepository;

@@ -10,23 +10,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name="weeks_sales")
 public class WeeksSales implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
-    @JoinColumn
+    @JoinColumn(name = "weeks_id", referencedColumnName = "id", nullable = false)
     @OneToOne
-    private Weeks weeks;
+    private Weeks week;
 
-    @JoinColumn
+    @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     @OneToOne
-    private Genres genres;
+    private Genres genre;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal percent;
@@ -37,16 +40,16 @@ public class WeeksSales implements Serializable {
 
     public WeeksSales() {
         this.id = null;
-        this.weeks = null;
-        this.genres = null;
+        this.week = null;
+        this.genre = null;
         this.percent = BigDecimal.ZERO;
         this.created_at = new Date();
     }
 
-    public WeeksSales(Long id, Weeks weeks, Genres genres, BigDecimal percent, Date created_at) {
+    public WeeksSales(Long id, Weeks week, Genres genre, BigDecimal percent, Date created_at) {
         this.id = id;
-        this.weeks = weeks;
-        this.genres = genres;
+        this.week = week;
+        this.genre = genre;
         this.percent = percent;
         this.created_at = created_at;
     }
@@ -59,20 +62,20 @@ public class WeeksSales implements Serializable {
         this.id = id;
     }
 
-    public Weeks getWeeks() {
-        return weeks;
+    public Weeks getWeek() {
+        return week;
     }
 
-    public void setWeeks(Weeks weeks) {
-        this.weeks = weeks;
+    public void setWeek(Weeks week) {
+        this.week = week;
     }
 
-    public Genres getGenres() {
-        return genres;
+    public Genres getGenre() {
+        return genre;
     }
 
-    public void setGenres(Genres genres) {
-        this.genres = genres;
+    public void setGenres(Genres genre) {
+        this.genre = genre;
     }
 
     public BigDecimal getPercent() {

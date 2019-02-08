@@ -1,6 +1,6 @@
 package beblue.io.config;
 
-import beblue.io.helper.WeeksSaleHelper;
+import beblue.io.helper.WeeksSalesHelper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +42,7 @@ public class DataInitializr implements ApplicationListener<ContextRefreshedEvent
 
     @Autowired
     private WeeksSaleRepository weeksSaleRepository;
-    
+
     @Autowired
     private UsersRepository usersRepository;
 
@@ -61,8 +61,8 @@ public class DataInitializr implements ApplicationListener<ContextRefreshedEvent
             genreHelper.loadGenre();
 
             // Add sales week
-            new WeeksSaleHelper(genreRepository, weeksRepository, weeksSaleRepository).loadWeekesSales();
-            
+            new WeeksSalesHelper(genreRepository, weeksRepository, weeksSaleRepository).loadWeekesSales();
+
             Users u = new Users(null, "admin", "admin", new Date());
             usersRepository.save(u);
 

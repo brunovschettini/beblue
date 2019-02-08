@@ -9,33 +9,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name="orders")
 public class Orders implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @ManyToOne
-    private Users users;
+    private Users user;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date created_at;
 
     public Orders() {
         this.id = null;
-        this.users = null;
+        this.user = null;
         this.created_at = new Date();
     }
 
-    public Orders(Long id, Users users, Date created_at) {
+    public Orders(Long id, Users user, Date created_at) {
         this.id = id;
-        this.users = users;
+        this.user = user;
         this.created_at = created_at;
     }
 
@@ -47,12 +50,12 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public Users getUsers() {
-        return users;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public Date getCreated_at() {

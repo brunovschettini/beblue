@@ -10,14 +10,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name = "albums")
 public class Albums implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Column(length = 255, nullable = false, unique = true)
@@ -26,11 +29,11 @@ public class Albums implements Serializable {
     @Column(length = 255, nullable = false)
     private String name;
 
-    @JoinColumn
+    @JoinColumn(name = "artist_id", referencedColumnName = "id", nullable = false)
     @OneToOne
     private Artists artist;
 
-    @JoinColumn
+    @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
     @OneToOne
     private Genres genre;
 

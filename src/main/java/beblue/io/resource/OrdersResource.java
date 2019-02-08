@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import beblue.io.model.OrdersItems;
 import beblue.io.model.Weeks;
 import beblue.io.model.WeeksSales;
+import beblue.io.repository.AlbumsRepository;
 import beblue.io.repository.WeeksRepository;
 import beblue.io.utils.Result;
 import java.math.BigDecimal;
@@ -29,7 +30,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import beblue.io.repository.OrdersItemsRepository;
 import beblue.io.repository.UsersRepository;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.persistence.TypedQuery;
+import org.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class OrdersResource {
@@ -43,6 +56,9 @@ public class OrdersResource {
     @Autowired
     private UsersRepository ur;
 
+    @Autowired
+    private AlbumsRepository a;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -55,12 +71,105 @@ public class OrdersResource {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         List<OrdersItems> ois = oir.findByOrder(id);
+        BigDecimal total = new BigDecimal(0);
+        BigDecimal total_cashback = new BigDecimal(0);
+        for (OrdersItems oi : ois) {
+            total_cashback = total_cashback.add(oi.getCashback());
+            total = total.add(oi.getCost());
+        }
+        OrderResult or = new OrderResult(total, total_cashback, ois);
+
         if (ois == null || ois.isEmpty()) {
             result.setStatus_code(0);
             result.setStatus("order not found!");
+            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+        }
+        result.setStatus("info: order nº " + ois.get(0).getOrder().getId());
+        result.setResult(or);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String someJsonString = null;
+        try {
+            someJsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Result r = mapper.readValue(someJsonString, Result.class);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/order/find/{q}", method = RequestMethod.GET)
+    public ResponseEntity<?> find_id(@PathVariable("q") String q) {
+        Result result = new Result();
+        if (q == null || q.isEmpty()) {
+            result.setStatus_code(0);
+            result.setStatus("empty query!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        return new ResponseEntity<>(ois, HttpStatus.OK);
+
+        JSONObject g = new JSONObject(q);
+        List<OrdersItems> ois = null;
+        if (g.getString("start_date") != null && g.getString("end_date") != null && !g.getString("start_date").isEmpty() && !g.getString("end_date").isEmpty()) {
+            Date sd = null;
+            Date ed = null;
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                sd = formato.parse(g.getString("start_date").replace("-", "/"));
+                ed = formato.parse(g.getString("end_date").replace("-", "/"));
+                ois = oir.findByDates(sd, ed);
+            } catch (ParseException ex) {
+                Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            EntityManager em = entityManager;
+            try {
+                Query query;
+                query = em.createQuery("SELECT OI FROM OrdersItems AS OI");
+                query.setMaxResults(50);
+                ois = query.getResultList();
+            } catch (Exception e) {
+                e.getMessage();
+            }
+
+        }
+        if (ois == null) {
+            return null;
+        }
+        BigDecimal total = new BigDecimal(0);
+        BigDecimal total_cashback = new BigDecimal(0);
+        for (OrdersItems oi : ois) {
+            total_cashback = total_cashback.add(oi.getCashback());
+            total = total.add(oi.getCost());
+        }
+        OrderResult or = new OrderResult(total, total_cashback, ois);
+
+        if (ois == null || ois.isEmpty()) {
+            result.setStatus_code(0);
+            result.setStatus("order not found!");
+            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+        }
+        result.setStatus("info: list orders by range date");
+        result.setResult(or);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String someJsonString = null;
+        try {
+            someJsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Result r = mapper.readValue(someJsonString, Result.class);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -78,7 +187,7 @@ public class OrdersResource {
         Orders orders = new Orders();
         Weeks weeks = wr.findByNumber_day(new Date().getDay());
         EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
-        orders.setUsers(ur.getOne(1L));
+        orders.setUser(ur.getOne(1L));
         em.getTransaction().begin();
         try {
             em.persist(orders);
@@ -92,13 +201,13 @@ public class OrdersResource {
         BigDecimal total_cashback = new BigDecimal(0);
         total.setScale(2, BigDecimal.ROUND_HALF_EVEN);
         for (Albums album : albums) {
-            Query query = em.createQuery("SELECT WS FROM WeeksSales WS WHERE WS.genres.id = :genre_id AND WS.weeks.id = :weeks_id");
+            Query query = em.createQuery("SELECT WS FROM WeeksSales WS WHERE WS.genre.id = :genre_id AND WS.week.id = :week_id");
             query.setParameter("genre_id", album.getGenre().getId());
-            query.setParameter("weeks_id", weeks.getId());
+            query.setParameter("week_id", weeks.getId());
             WeeksSales ws = (WeeksSales) query.getSingleResult();
             OrdersItems oi = new OrdersItems();
-            oi.setAlbums(album);
-            oi.setOrders(orders);
+            oi.setAlbum(album);
+            oi.setOrder(orders);
             oi.setCost(album.getPrice());
             oi.setCashback_percent_log(ws.getPercent());
             total_cashback = total_cashback.add(oi.getCashback());
@@ -114,10 +223,104 @@ public class OrdersResource {
             ois.add(oi);
         }
         em.getTransaction().commit();
-        result.setStatus("success: order nº " + ois.get(0).getOrders().getId() + " registered");
-        OrderResult or = new OrderResult(total, total_cashback, ois); 
-        result.setResult(new Gson().toJson(or));
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        result.setStatus("success: order nº " + ois.get(0).getOrder().getId() + " registered");
+        OrderResult or = new OrderResult(total, total_cashback, ois);
+        result.setResult(or);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String someJsonString = null;
+        try {
+            someJsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Result r = mapper.readValue(someJsonString, Result.class);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @RequestMapping(value = "/order/add2", method = RequestMethod.POST)
+    public ResponseEntity<?> store_id(@RequestParam("albums_id") String albums_id) {
+        // public ResponseEntity<?> store() {
+        Result result = new Result();
+        // List<Album> albums = null;
+        if (albums_id == null || albums_id.isEmpty()) {
+            result.setStatus_code(0);
+            result.setStatus("empty order id!");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        String replace = albums_id.replace("[", "");
+        System.out.println(replace);
+        String replace1 = replace.replace("]", "");
+        System.out.println(replace1);
+        List<Long> listAlbumsId = Arrays
+                .stream(replace1.split(","))
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+        List<Albums> albums = a.findAllById(listAlbumsId);
+        List<OrdersItems> ois = new ArrayList<>();
+        Orders orders = new Orders();
+        Weeks weeks = wr.findByNumber_day(new Date().getDay());
+        EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
+        orders.setUser(ur.getOne(1L));
+        em.getTransaction().begin();
+        try {
+            em.persist(orders);
+            em.flush();
+        } catch (Exception e) {
+            result.setStatus_code(0);
+            result.setStatus("e->" + e.getMessage());
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        BigDecimal total = new BigDecimal(0);
+        BigDecimal total_cashback = new BigDecimal(0);
+        total.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        for (Albums album : albums) {
+            Query query = em.createQuery("SELECT WS FROM WeeksSales WS WHERE WS.genre.id = :genre_id AND WS.week.id = :week_id");
+            query.setParameter("genre_id", album.getGenre().getId());
+            query.setParameter("week_id", weeks.getId());
+            WeeksSales ws = (WeeksSales) query.getSingleResult();
+            OrdersItems oi = new OrdersItems();
+            oi.setAlbum(album);
+            oi.setOrder(orders);
+            oi.setCost(album.getPrice());
+            oi.setCashback_percent_log(ws.getPercent());
+            total_cashback = total_cashback.add(oi.getCashback());
+            total = total.add(oi.getCost());
+            try {
+                em.persist(oi);
+                em.flush();
+            } catch (Exception e) {
+                result.setStatus_code(0);
+                result.setStatus("e->" + e.getMessage());
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            }
+            ois.add(oi);
+        }
+        em.getTransaction().commit();
+        result.setStatus("success: order nº " + ois.get(0).getOrder().getId() + " registered");
+        OrderResult or = new OrderResult(total, total_cashback, ois);
+        result.setResult(or);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String someJsonString = null;
+        try {
+            someJsonString = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Result r = mapper.readValue(someJsonString, Result.class);
+            return new ResponseEntity<>(r, HttpStatus.OK);
+        } catch (IOException ex) {
+            Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -131,7 +334,7 @@ public class OrdersResource {
         }
         EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("SELECT OI FROM OrdersItems OI WHERE OI.orders.id = :order_id");
+        Query query = em.createQuery("SELECT OI FROM OrdersItems OI WHERE OI.order.id = :order_id");
         query.setParameter("order_id", orders.getId());
         List<OrdersItems> ois = query.getResultList();
         for (OrdersItems ordersItems : ois) {

@@ -1,7 +1,9 @@
 package beblue.io.utils;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Result implements Serializable {
 
     private Integer status_code;
