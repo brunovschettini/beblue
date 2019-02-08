@@ -1,5 +1,13 @@
 # beblue
 
+#Banco de Dados
+
+
+
+
+#Banco de Dados
+
+
 # Consultar o catálogo de discos de forma paginada, filtrando por gênero e ordenando de forma crescente pelo nome do disco;
 Method: GET
 
