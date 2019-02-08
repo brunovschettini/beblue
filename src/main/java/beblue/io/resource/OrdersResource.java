@@ -103,8 +103,13 @@ public class OrdersResource {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/order/find/", method = RequestMethod.GET)
+    public ResponseEntity<?> find_query() {
+        return find_query("all");
+    }
+
     @RequestMapping(value = "/order/find/{q}", method = RequestMethod.GET)
-    public ResponseEntity<?> find_id(@PathVariable("q") String q) {
+    public ResponseEntity<?> find_query(@PathVariable("q") String q) {
         Result result = new Result();
         if (q == null || q.isEmpty()) {
             result.setStatus_code(0);
@@ -112,33 +117,31 @@ public class OrdersResource {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
-        JSONObject g = new JSONObject(q);
         List<OrdersItems> ois = null;
-        if (g.getString("start_date") != null && g.getString("end_date") != null && !g.getString("start_date").isEmpty() && !g.getString("end_date").isEmpty()) {
-            Date sd = null;
-            Date ed = null;
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                sd = formato.parse(g.getString("start_date").replace("-", "/"));
-                ed = formato.parse(g.getString("end_date").replace("-", "/"));
-                ois = oir.findByDates(sd, ed);
-            } catch (ParseException ex) {
-                Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            EntityManager em = entityManager;
-            try {
-                Query query;
-                query = em.createQuery("SELECT OI FROM OrdersItems AS OI");
-                query.setMaxResults(50);
-                ois = query.getResultList();
-            } catch (Exception e) {
-                e.getMessage();
-            }
 
+        if (q.equals("all")) {
+            ois = oir.findByAll();
+        } else {
+            JSONObject g = new JSONObject(q);
+            if (g.getString("start_date") != null && g.getString("end_date") != null && !g.getString("start_date").isEmpty() && !g.getString("end_date").isEmpty()) {
+                Date sd = null;
+                Date ed = null;
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    sd = formato.parse(g.getString("start_date").replace("-", "/"));
+                    ed = formato.parse(g.getString("end_date").replace("-", "/"));
+                    ois = oir.findByDates(sd, ed);
+                } catch (ParseException ex) {
+                    Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                ois = oir.findByAll();
+            }
         }
         if (ois == null) {
-            return null;
+            result.setStatus_code(0);
+            result.setStatus("order not found!");
+            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
         }
         BigDecimal total = new BigDecimal(0);
         BigDecimal total_cashback = new BigDecimal(0);
@@ -147,12 +150,6 @@ public class OrdersResource {
             total = total.add(oi.getCost());
         }
         OrderResult or = new OrderResult(total, total_cashback, ois);
-
-        if (ois == null || ois.isEmpty()) {
-            result.setStatus_code(0);
-            result.setStatus("order not found!");
-            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
-        }
         result.setStatus("info: list orders by range date");
         result.setResult(or);
         ObjectMapper mapper = new ObjectMapper();

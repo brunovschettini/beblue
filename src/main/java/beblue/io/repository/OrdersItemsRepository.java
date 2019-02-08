@@ -14,7 +14,10 @@ public interface OrdersItemsRepository extends JpaRepository<OrdersItems, Long> 
     @Query("SELECT ORD FROM OrdersItems ORD WHERE ORD.order.id = ?1 ORDER BY ORD.order.id ASC")
     List<OrdersItems> findByOrder(Long order_id);
 
-    @Query("SELECT ORD FROM OrdersItems ORD WHERE ORD.created_at >= ?1 AND ORD.created_at <= ?2 ORDER BY ORD.order.id ASC, ORD.album.name ASC")
+    @Query("SELECT ORD FROM OrdersItems ORD WHERE ORD.created_at >= ?1 AND ORD.created_at <= ?2 ORDER BY ORD.created_at ASC, ORD.order.id ASC, ORD.album.name ASC")
     List<OrdersItems> findByDates(Date start_date, Date end_date);
+
+    @Query("SELECT ORD FROM OrdersItems ORD ORDER BY ORD.created_at ASC, ORD.order.id ASC, ORD.album.name ASC")
+    List<OrdersItems> findByAll();
 
 }
