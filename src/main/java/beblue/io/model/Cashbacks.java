@@ -28,11 +28,11 @@ public class Cashbacks implements Serializable {
 
     @JoinColumn
     @ManyToOne
-    private Artist artist;
+    private Artists artists;
 
     @JoinColumn
     @ManyToOne
-    private Genre genre;
+    private Genres genres;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal price;
@@ -45,17 +45,17 @@ public class Cashbacks implements Serializable {
         this.id = null;
         this.spotify_id = "";
         this.name = "";
-        this.artist = null;
-        this.genre = null;
+        this.artists = null;
+        this.genres = null;
         this.created_at = new Date();
     }
 
-    public Cashbacks(Long id, String spotify_id, String name, Artist artist, Genre genre, Date created_at) {
+    public Cashbacks(Long id, String spotify_id, String name, Artists artists, Genres genres, Date created_at) {
         this.id = id;
         this.spotify_id = spotify_id;
         this.name = name;
-        this.artist = artist;
-        this.genre = genre;
+        this.artists = artists;
+        this.genres = genres;
         this.created_at = created_at;
     }
 
@@ -83,20 +83,20 @@ public class Cashbacks implements Serializable {
         this.name = name;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public Artists getArtists() {
+        return artists;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setArtist(Artists artists) {
+        this.artists = artists;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public Genres getGenres() {
+        return genres;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenres(Genres genres) {
+        this.genres = genres;
     }
 
     public BigDecimal getPrice() {

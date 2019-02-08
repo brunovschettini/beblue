@@ -2,6 +2,7 @@ package beblue.io.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,32 +11,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"orders_id", "albums_id"}))
 public class OrdersItems implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn
+    @JoinColumn(nullable = false)
     @ManyToOne
     private Orders orders;
 
-    @JoinColumn
+    @JoinColumn(nullable = false)
     @ManyToOne
-    private Album album;
+    private Albums albums;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal cashback_percent_log;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
-    private BigDecimal original_price;
-
-    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
-    private BigDecimal total;
+    private BigDecimal cost;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,20 +45,19 @@ public class OrdersItems implements Serializable {
     public OrdersItems() {
         this.id = null;
         this.orders = null;
-        this.album = null;
-        this.original_price = BigDecimal.ZERO;
+        this.albums = null;
         this.cashback_percent_log = BigDecimal.ZERO;
-        this.total = BigDecimal.ZERO;
+        this.cost = BigDecimal.ZERO;
+        this.cost.setScale(2, RoundingMode.HALF_EVEN);
         this.created_at = new Date();
     }
 
-    public OrdersItems(Long id, Orders orders, Album album, BigDecimal original_price, BigDecimal cashback_percent_log, BigDecimal total, Date created_at) {
+    public OrdersItems(Long id, Orders orders, Albums albums, BigDecimal cashback_percent_log, BigDecimal cost, Date created_at) {
         this.id = id;
         this.orders = orders;
-        this.album = album;
-        this.original_price = original_price;
+        this.albums = albums;
         this.cashback_percent_log = cashback_percent_log;
-        this.total = total;
+        this.cost = cost;
         this.created_at = created_at;
     }
 
@@ -77,20 +77,20 @@ public class OrdersItems implements Serializable {
         this.orders = orders;
     }
 
-    public Album getAlbum() {
-        return album;
+    public Albums getAlbums() {
+        return albums;
     }
 
-    public void setAlbum(Album album) {
-        this.album = album;
+    public void setAlbums(Albums albums) {
+        this.albums = albums;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public BigDecimal getCost() {
+        return cost;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 
     public BigDecimal getCashback_percent_log() {
@@ -109,12 +109,11 @@ public class OrdersItems implements Serializable {
         this.created_at = created_at;
     }
 
-    public BigDecimal getOriginal_price() {
-        return original_price;
-    }
-
-    public void setOriginal_price(BigDecimal original_price) {
-        this.original_price = original_price;
+    public BigDecimal getCashback() {
+        double cashback_calc = ((cost.doubleValue() * cashback_percent_log.doubleValue()) / 100);
+        BigDecimal bd = new BigDecimal(cashback_calc);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        return bd;
     }
 
 }

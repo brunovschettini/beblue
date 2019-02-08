@@ -15,26 +15,26 @@ import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.requests.data.search.SearchItemRequest;
 
-import beblue.io.model.Album;
-import beblue.io.model.Artist;
-import beblue.io.model.Genre;
-import beblue.io.repository.AlbumRepository;
-import beblue.io.repository.ArtistRepository;
-import beblue.io.repository.GenreRepository;
+import beblue.io.model.Albums;
+import beblue.io.model.Artists;
+import beblue.io.model.Genres;
 import com.neovisionaries.i18n.CountryCode;
 import java.util.Random;
 import org.springframework.stereotype.Component;
+import beblue.io.repository.AlbumsRepository;
+import beblue.io.repository.ArtistsRepository;
+import beblue.io.repository.GenresRepository;
 
 @SuppressWarnings("unchecked")
 @Component
 public class AlbumHelper {
 
-    public GenreRepository genreRepository;
-    public AlbumRepository albumRepository;
-    public ArtistRepository artistRepository;
+    public GenresRepository genreRepository;
+    public AlbumsRepository albumRepository;
+    public ArtistsRepository artistRepository;
 
-    public AlbumHelper(GenreRepository genreRepository, AlbumRepository albumRepository,
-            ArtistRepository artistRepository) {
+    public AlbumHelper(GenresRepository genreRepository, AlbumsRepository albumRepository,
+            ArtistsRepository artistRepository) {
         this.genreRepository = genreRepository;
         this.albumRepository = albumRepository;
         this.artistRepository = artistRepository;
@@ -48,7 +48,7 @@ public class AlbumHelper {
         listGenreString.add("pop");
         listGenreString.add("rock");
         for (String genreString : listGenreString) {
-            Genre genre = genreRepository.findByName(genreString);
+            Genres genre = genreRepository.findByName(genreString);
             List<SearchResult> listSearchResult = new ArrayList<>();
             int z = 19;
             while (z != 20) {
@@ -69,17 +69,17 @@ public class AlbumHelper {
 
                     for (AlbumSimplified item : result.getItems()) {
                         ArtistSimplified[] as = item.getArtists();
-                        Artist artist = artistRepository.findByNameAndSpotify_id(as[0].getName(), as[0].getId());
+                        Artists artist = artistRepository.findByNameAndSpotify_id(as[0].getName(), as[0].getId());
                         System.err.println(count);
                         count++;
                         if (artist == null) {
-                            artist = new Artist();
+                            artist = new Artists();
                             artist.setName(as[0].getName());
                             artist.setSpotify_id(as[0].getId());
                             artist = artistRepository.save(artist);
                         }
                         if (artist != null) {
-                            Album album = new Album();
+                            Albums album = new Albums();
                             if (albumRepository.findBySpotify_id(item.getId()) == null) {
                                 if (item.getName().isEmpty()) {
                                     album.setName(as[0].getName());

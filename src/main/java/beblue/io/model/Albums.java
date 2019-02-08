@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Album implements Serializable {
+public class Albums implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class Album implements Serializable {
 
     @JoinColumn
     @OneToOne
-    private Artist artist;
+    private Artists artist;
 
     @JoinColumn
     @OneToOne
-    private Genre genre;
+    private Genres genre;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal price;
@@ -41,7 +41,7 @@ public class Album implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    public Album() {
+    public Albums() {
         this.id = null;
         this.spotify_id = "";
         this.name = "";
@@ -50,7 +50,7 @@ public class Album implements Serializable {
         this.created_at = new Date();
     }
 
-    public Album(Long id, String spotify_id, String name, Artist artist, Genre genre, Date created_at) {
+    public Albums(Long id, String spotify_id, String name, Artists artist, Genres genre, Date created_at) {
         this.id = id;
         this.spotify_id = spotify_id;
         this.name = name;
@@ -83,19 +83,19 @@ public class Album implements Serializable {
         this.name = name;
     }
 
-    public Artist getArtist() {
+    public Artists getArtist() {
         return artist;
     }
 
-    public void setArtist(Artist artist) {
+    public void setArtist(Artists artist) {
         this.artist = artist;
     }
 
-    public Genre getGenre() {
+    public Genres getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(Genres genre) {
         this.genre = genre;
     }
 

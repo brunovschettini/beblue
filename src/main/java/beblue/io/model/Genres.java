@@ -1,5 +1,5 @@
 package beblue.io.model;
- 
+
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,27 +8,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Artist implements Serializable   {
+public class Genres implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 255, nullable = false, unique = true)
-    private String spotify_id;
-
-    @Column(length = 255, nullable = false)
     private String name;
 
-    public Artist() {
+    public Genres() {
         this.id = null;
-        this.spotify_id = "";
         this.name = "";
     }
 
-    public Artist(Long id, String spotify_id, String name) {
+    public Genres(Long id, String name) {
         this.id = id;
-        this.spotify_id = spotify_id;
         this.name = name;
     }
 
@@ -38,14 +33,6 @@ public class Artist implements Serializable   {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSpotify_id() {
-        return spotify_id;
-    }
-
-    public void setSpotify_id(String spotify_id) {
-        this.spotify_id = spotify_id;
     }
 
     public String getName() {

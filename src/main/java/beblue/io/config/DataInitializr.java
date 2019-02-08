@@ -16,29 +16,35 @@ import beblue.io.auth.SpotifyAuthorization;
 import beblue.io.helper.AlbumHelper;
 import beblue.io.helper.GenreHelper;
 import beblue.io.helper.WeeksHelper;
-import beblue.io.repository.AlbumRepository;
-import beblue.io.repository.ArtistRepository;
-import beblue.io.repository.GenreRepository;
+import beblue.io.model.Users;
 import beblue.io.repository.WeeksRepository;
 import beblue.io.repository.WeeksSaleRepository;
+import beblue.io.repository.AlbumsRepository;
+import beblue.io.repository.ArtistsRepository;
+import beblue.io.repository.GenresRepository;
+import beblue.io.repository.UsersRepository;
+import java.util.Date;
 
 @Component
 public class DataInitializr implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
-    private GenreRepository genreRepository;
+    private GenresRepository genreRepository;
 
     @Autowired
-    private AlbumRepository albumRepository;
+    private AlbumsRepository albumRepository;
 
     @Autowired
-    private ArtistRepository artistRepository;
+    private ArtistsRepository artistRepository;
 
     @Autowired
     private WeeksRepository weeksRepository;
 
     @Autowired
     private WeeksSaleRepository weeksSaleRepository;
+    
+    @Autowired
+    private UsersRepository usersRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -56,6 +62,9 @@ public class DataInitializr implements ApplicationListener<ContextRefreshedEvent
 
             // Add sales week
             new WeeksSaleHelper(genreRepository, weeksRepository, weeksSaleRepository).loadWeekesSales();
+            
+            Users u = new Users(null, "admin", "admin", new Date());
+            usersRepository.save(u);
 
             AlbumHelper albumHelper = new AlbumHelper(genreRepository, albumRepository, artistRepository);
             albumHelper.storesSpotifyAlbums();

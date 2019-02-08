@@ -7,35 +7,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Orders implements Serializable {
+public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(nullable = false)
-    @ManyToOne
-    private Users users;
+    @Column(length = 255, nullable = false)
+    private String name;
+
+    @Column(length = 255, nullable = false, unique = true)
+    private String login;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    public Orders() {
+    public Users() {
         this.id = null;
-        this.users = null;
+        this.name = "";
+        this.login = "";
         this.created_at = new Date();
     }
 
-    public Orders(Long id, Users users, Date created_at) {
+    public Users(Long id, String name, String login, Date created_at) {
         this.id = id;
-        this.users = users;
+        this.name = name;
+        this.login = login;
         this.created_at = created_at;
     }
 
@@ -47,12 +49,20 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public Users getUsers() {
-        return users;
+    public String getName() {
+        return name;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Date getCreated_at() {

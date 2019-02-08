@@ -1,16 +1,16 @@
 package beblue.io.repository;
 
-import beblue.io.model.Genre;
+import beblue.io.model.Genres;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
  
 @Repository
-public interface GenreRepository extends JpaRepository<Genre, Long> {
+public interface GenresRepository extends JpaRepository<Genres, Long> {
 
     @Override
-    List<Genre> findAll();
+    List<Genres> findAll();
 
-    Genre findByName(String name);
+    Genres findByName(String name);
 
 }

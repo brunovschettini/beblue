@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderItemsRepository extends JpaRepository<OrdersItems, Long> {
+public interface OrdersItemsRepository extends JpaRepository<OrdersItems, Long> {
 
     @Query("SELECT ORD FROM OrdersItems ORD WHERE ORD.orders.id = ?1 ORDER BY ORD.orders.id ASC")
     List<OrdersItems> findByOrder(Long order_id);

@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import beblue.io.model.Album;
-import beblue.io.model.Genre;
-import beblue.io.repository.AlbumRepository;
-import beblue.io.repository.ArtistRepository;
-import beblue.io.repository.GenreRepository;
+import beblue.io.model.Albums;
+import beblue.io.model.Genres;
 import beblue.io.utils.Result;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import beblue.io.repository.AlbumsRepository;
+import beblue.io.repository.ArtistsRepository;
+import beblue.io.repository.GenresRepository;
 
 @RestController
 public class AlbumResource {
 
     @Autowired
-    GenreRepository genreRepository;
+    GenresRepository genreRepository;
 
     @Autowired
-    AlbumRepository albumRepository;
+    AlbumsRepository albumRepository;
 
     @Autowired
-    ArtistRepository artistRepository;
+    ArtistsRepository artistRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -50,27 +50,28 @@ public class AlbumResource {
             result.setStatus("empty genre!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        Genre genre = genreRepository.findByName(name);
+        Genres genre = genreRepository.findByName(name);
+        if (genre == null) {
+            result.setStatus_code(0);
+            result.setStatus("empty genre!");
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
         if (offset == null) {
             offset = 0;
         }
-
-        if (name.toLowerCase().equals("mbp") || name.toLowerCase().equals("rock") || name.toLowerCase().equals("pop")
-                || name.toLowerCase().equals("classic")) {
-
-        } else {
-            if (genre == null) {
-                result.setStatus_code(0);
-                result.setStatus("empty genre!");
-                return new ResponseEntity<>(result, HttpStatus.OK);
+        List<Albums> listAlbum = new ArrayList();
+        if (name.toLowerCase().equals("mpb") || name.toLowerCase().equals("rock") || name.toLowerCase().equals("pop") || name.toLowerCase().equals("classic")) {
+            Query q = em.createNativeQuery("SELECT A.* FROM album A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Albums.class);
+            listAlbum = q.getResultList();
+            if (listAlbum.isEmpty()) {
+                result.setStatus("empty albums!");
             }
+            return new ResponseEntity<>(listAlbum, HttpStatus.OK);
         }
-        Query q = em.createNativeQuery("SELECT A.* FROM album A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Album.class);
-        List<Album> listAlbum = q.getResultList();
-        if (listAlbum.isEmpty()) {
-            result.setStatus("empty albums!");
-        }
-        return new ResponseEntity<>(listAlbum, HttpStatus.OK);
+        result.setStatus_code(0);
+        result.setStatus("empty albums!");
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET)
@@ -81,7 +82,7 @@ public class AlbumResource {
             result.setStatus("empty album id!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        Album a = albumRepository.findByCode(id);
+        Albums a = albumRepository.findByCode(id);
         if (a == null) {
             result.setStatus_code(0);
             result.setStatus("album not found!");
@@ -98,7 +99,7 @@ public class AlbumResource {
             result.setStatus("empty spotify_id album!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        Album a = albumRepository.findBySpotify_id(spotify_id);
+        Albums a = albumRepository.findBySpotify_id(spotify_id);
         if (a == null) {
             result.setStatus_code(0);
             result.setStatus("album not found!");

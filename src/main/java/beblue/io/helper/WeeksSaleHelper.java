@@ -1,9 +1,8 @@
 package beblue.io.helper;
 
-import beblue.io.model.Genre;
+import beblue.io.model.Genres;
 import beblue.io.model.Weeks;
 import beblue.io.model.WeeksSales;
-import beblue.io.repository.GenreRepository;
 import beblue.io.repository.WeeksRepository;
 import beblue.io.repository.WeeksSaleRepository;
 import java.math.BigDecimal;
@@ -11,15 +10,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Component;
+import beblue.io.repository.GenresRepository;
 
 @Component
 public class WeeksSaleHelper {
 
-    public GenreRepository genreRepository;
+    public GenresRepository genreRepository;
     public WeeksRepository weeksRepository;
     public WeeksSaleRepository weeksSaleRepository;
 
-    public WeeksSaleHelper(GenreRepository genreRepository, WeeksRepository weeksRepository, WeeksSaleRepository weeksSaleRepository) {
+    public WeeksSaleHelper(GenresRepository genreRepository, WeeksRepository weeksRepository, WeeksSaleRepository weeksSaleRepository) {
         this.genreRepository = genreRepository;
         this.weeksRepository = weeksRepository;
         this.weeksSaleRepository = weeksSaleRepository;
@@ -68,7 +68,7 @@ public class WeeksSaleHelper {
 
     public WeeksSales storeWeekesSales(Integer weekday, String genre, BigDecimal percent) {
         Weeks w = weeksRepository.findByNumber_day(weekday);
-        Genre g = genreRepository.findByName(genre);
+        Genres g = genreRepository.findByName(genre);
         return new WeeksSales(null, w, g, percent, new Date());
     }
 

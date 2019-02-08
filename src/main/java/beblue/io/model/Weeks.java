@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Weeks implements Serializable {
@@ -20,8 +19,6 @@ public class Weeks implements Serializable {
 
     @Column(nullable = false)
     private Integer number_day;
-    @OneToOne(mappedBy = "weeks")
-    private WeeksSales weeksSales;
 
     public Weeks() {
         this.id = null;

@@ -26,7 +26,7 @@ public class WeeksSales implements Serializable {
 
     @JoinColumn
     @OneToOne
-    private Genre genre;
+    private Genres genres;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal percent;
@@ -38,15 +38,15 @@ public class WeeksSales implements Serializable {
     public WeeksSales() {
         this.id = null;
         this.weeks = null;
-        this.genre = null;
+        this.genres = null;
         this.percent = BigDecimal.ZERO;
         this.created_at = new Date();
     }
 
-    public WeeksSales(Long id, Weeks weeks, Genre genre, BigDecimal percent, Date created_at) {
+    public WeeksSales(Long id, Weeks weeks, Genres genres, BigDecimal percent, Date created_at) {
         this.id = id;
         this.weeks = weeks;
-        this.genre = genre;
+        this.genres = genres;
         this.percent = percent;
         this.created_at = created_at;
     }
@@ -67,12 +67,12 @@ public class WeeksSales implements Serializable {
         this.weeks = weeks;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public Genres getGenres() {
+        return genres;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenres(Genres genres) {
+        this.genres = genres;
     }
 
     public BigDecimal getPercent() {
