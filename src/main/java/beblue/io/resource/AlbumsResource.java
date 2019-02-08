@@ -22,7 +22,7 @@ import beblue.io.repository.ArtistsRepository;
 import beblue.io.repository.GenresRepository;
 
 @RestController
-public class AlbumResource {
+public class AlbumsResource {
 
     @Autowired
     GenresRepository genreRepository;

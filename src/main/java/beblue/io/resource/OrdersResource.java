@@ -1,5 +1,6 @@
 package beblue.io.resource;
 
+import beblue.io.helper.OrderResult;
 import beblue.io.model.Albums;
 import beblue.io.model.Orders;
 import java.util.List;
@@ -28,9 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import beblue.io.repository.OrdersItemsRepository;
 import beblue.io.repository.UsersRepository;
+import com.google.gson.Gson;
 
 @RestController
-public class OrderResource {
+public class OrdersResource {
 
     @Autowired
     private OrdersItemsRepository oir;
@@ -113,7 +115,8 @@ public class OrderResource {
         }
         em.getTransaction().commit();
         result.setStatus("success: order nº " + ois.get(0).getOrders().getId() + " registered");
-        result.setResult(new OrderResult(total, total_cashback, ois));
+        OrderResult or = new OrderResult(total, total_cashback, ois); 
+        result.setResult(new Gson().toJson(or));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -176,43 +179,6 @@ public class OrderResource {
         em.getTransaction().commit();
         result.setStatus("success: item nº " + ordersItems.getId() + " removed");
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    public class OrderResult {
-
-        private BigDecimal total;
-        private BigDecimal total_cashback;
-        private List<OrdersItems> ordersItems;
-
-        public OrderResult(BigDecimal total, BigDecimal total_cashback, List<OrdersItems> ordersItems) {
-            this.total = total;
-            this.ordersItems = ordersItems;
-        }
-
-        public BigDecimal getTotal() {
-            return total;
-        }
-
-        public BigDecimal getTotal_cashback() {
-            return total_cashback;
-        }
-
-        public void setTotal_cashback(BigDecimal total_cashback) {
-            this.total_cashback = total_cashback;
-        }
-
-        public void setTotal(BigDecimal total) {
-            this.total = total;
-        }
-
-        public List<OrdersItems> getOrdersItems() {
-            return ordersItems;
-        }
-
-        public void setOrdersItems(List<OrdersItems> ordersItems) {
-            this.ordersItems = ordersItems;
-        }
-
     }
 
 }

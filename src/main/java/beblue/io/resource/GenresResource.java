@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import beblue.io.repository.GenresRepository;
 
 @RestController
-public class GenreResource {
+public class GenresResource {
 
     @Autowired
     GenresRepository genreRepository = null;

@@ -15,9 +15,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import org.springframework.data.annotation.Transient;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"orders_id", "albums_id"}))
+@Table(name = "OrdersItems", uniqueConstraints = @UniqueConstraint(columnNames = {"orders_id", "albums_id"}))
 public class OrdersItems implements Serializable {
 
     @Id
