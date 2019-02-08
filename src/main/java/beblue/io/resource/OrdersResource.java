@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import beblue.io.repository.OrdersItemsRepository;
+import beblue.io.repository.OrdersRepository;
 import beblue.io.repository.UsersRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +41,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.persistence.TypedQuery;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,6 +49,9 @@ public class OrdersResource {
 
     @Autowired
     private OrdersItemsRepository oir;
+
+    @Autowired
+    private OrdersRepository oi;
 
     @Autowired
     private WeeksRepository wr;
@@ -207,6 +210,7 @@ public class OrdersResource {
             oi.setOrder(orders);
             oi.setCost(album.getPrice());
             oi.setCashback_percent_log(ws.getPercent());
+            oi.setCashback(oi.calcCashback());
             total_cashback = total_cashback.add(oi.getCashback());
             total = total.add(oi.getCost());
             try {
@@ -321,23 +325,22 @@ public class OrdersResource {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    @RequestMapping(value = "/order/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete(@RequestBody Orders orders) {
+    @RequestMapping(value = "/order/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         Result result = new Result();
-        if (orders == null) {
+        if (id == null) {
             result.setStatus_code(0);
             result.setStatus("empty order!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
-        em.getTransaction().begin();
-        Query query = em.createQuery("SELECT OI FROM OrdersItems OI WHERE OI.order.id = :order_id");
-        query.setParameter("order_id", orders.getId());
-        List<OrdersItems> ois = query.getResultList();
+        Orders orders = oi.getOne(id);
+        List<OrdersItems> ois = oir.findByOrder(id);
+        // EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
+        // em.getTransaction().begin();
         for (OrdersItems ordersItems : ois) {
             try {
-                em.remove(ordersItems);
-                em.flush();
+                oir.delete(ordersItems);
+                // em.flush();
             } catch (Exception e) {
                 result.setStatus_code(0);
                 result.setStatus("order items e->" + e.getMessage());
@@ -345,38 +348,34 @@ public class OrdersResource {
             }
         }
         try {
-            em.remove(orders);
-            em.flush();
+            oi.delete(orders);
+            // em.flush();
         } catch (Exception e) {
             result.setStatus_code(0);
             result.setStatus("order e->" + e.getMessage());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        em.getTransaction().commit();
         result.setStatus("success: order nº " + orders.getId() + " removed");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    @RequestMapping(value = "/order/item/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<?> delete_item(@RequestBody OrdersItems ordersItems) {
+    @RequestMapping(value = "/order/item/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> delete_item(@PathVariable("id") Long id) {
+        OrdersItems ordersItems = oir.getOne(id);
         Result result = new Result();
         if (ordersItems == null) {
             result.setStatus_code(0);
             result.setStatus("empty order!");
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
-        em.getTransaction().begin();
         try {
-            em.remove(ordersItems);
-            em.flush();
+            oir.delete(ordersItems);
         } catch (Exception e) {
             result.setStatus_code(0);
             result.setStatus("order items e->" + e.getMessage());
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        em.getTransaction().commit();
         result.setStatus("success: item nº " + ordersItems.getId() + " removed");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

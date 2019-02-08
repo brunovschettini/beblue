@@ -22,7 +22,7 @@ public class OrdersItems implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
@@ -33,8 +33,11 @@ public class OrdersItems implements Serializable {
     @ManyToOne
     private Albums album;
 
-    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
+    @Column(nullable = false, precision = 020, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal cashback_percent_log;
+
+    @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
+    private BigDecimal cashback;
 
     @Column(nullable = false, precision = 20, scale = 2, columnDefinition = "DECIMAL(20,2) DEFAULT 0")
     private BigDecimal cost;
@@ -48,25 +51,20 @@ public class OrdersItems implements Serializable {
         this.order = null;
         this.album = null;
         this.cashback_percent_log = BigDecimal.ZERO;
+        this.cashback = BigDecimal.ZERO;
         this.cost = BigDecimal.ZERO;
         this.cost.setScale(2, RoundingMode.HALF_EVEN);
         this.created_at = new Date();
     }
 
-    public OrdersItems(Long id, Orders order, Albums album, BigDecimal cashback_percent_log, BigDecimal cost, Date created_at) {
+    public OrdersItems(Long id, Orders order, Albums album, BigDecimal cashback, BigDecimal cashback_percent_log, BigDecimal cost, Date created_at) {
         this.id = id;
         this.order = order;
         this.album = album;
         this.cashback_percent_log = cashback_percent_log;
+        this.cashback = cashback_percent_log;
         this.cost = cost;
         this.created_at = created_at;
-    }
-
-    public BigDecimal getCashback() {
-        double cashback_calc = ((cost.doubleValue() * cashback_percent_log.doubleValue()) / 100);
-        BigDecimal bd = new BigDecimal(cashback_calc);
-        bd = bd.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-        return bd;
     }
 
     public Long getId() {
@@ -101,6 +99,14 @@ public class OrdersItems implements Serializable {
         this.cashback_percent_log = cashback_percent_log;
     }
 
+    public BigDecimal getCashback() {
+        return cashback;
+    }
+
+    public void setCashback(BigDecimal cashback) {
+        this.cashback = cashback;
+    }
+
     public BigDecimal getCost() {
         return cost;
     }
@@ -115,6 +121,13 @@ public class OrdersItems implements Serializable {
 
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
+    }
+
+    public BigDecimal calcCashback() {
+        double cashback_calc = ((cost.doubleValue() * cashback_percent_log.doubleValue()) / 100);
+        BigDecimal bd = new BigDecimal(cashback_calc);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        return bd;
     }
 
 }
