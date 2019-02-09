@@ -2,7 +2,7 @@
 
 * [Considerações](#considerações)
 * [Desenvolvimento](#desenvolvimento)
-* [Pedidos & Respostas](#pedidos-respostas)
+* [Pedidos & Respostas](#pedidos--respostas)
 * [HTTP Verbs](#http-verbs)
 * [Responses](#responses)
 * [Error handling](#error-handling)
@@ -50,78 +50,216 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 
   - [GET /status](#get-status)
   - [GET /genres/](#get-genres) 
-  - [GET /album/genre/{genre}/{offset}](#get-albums)
-  - [GET /album/id/{id}](#get-albums-id)
+  - [GET /album/genre/[genre]/[offset]](#get-albums)
+  - [GET /album/id/[id]](#get-albums-id)
   - [GET /order/find/](#get-orders)
-  - [GET /order/find/{query}](#get-orders-query)
-  - [GET /order/id/{id}](#get-orders-id)
+  - [GET /order/find/[query]](#get-orders-query)
+  - [GET /order/id/[id]](#get-orders-id)
   - [POST /order/add](#get-orders-add)
   - [POST /order/add2](#get-orders-add2)
-  - [DELETE /order/delete/{id}](#get-orders-delete)
-  - [DELETE /order/item/delete/{id}](#get-orders-items-delete)
+  - [DELETE /order/delete/[id]](#get-orders-delete)
+  - [DELETE /order/item/delete/[id]](#get-orders-items-delete)
 
+### GET /status
 
-### GET /magazines
+Exemplo: http://localhost/api/status
 
-Example: http://localhost/api/status
+Response: HTTP 200 (OK)
+
+### GET /genres
+
+ - Consulta os gêneros musicais
+
+Exemplo: http://localhost/api/genres
 
 Response body:
+[
+    {"id":1,"name":"classic"},
+    {"id":2,"name":"acoustic"},
+    {"id":3,"name":"afrobeat"},
+    {"id":4,"name":"alt-rock"}
+]
+ 
 
+### GET /album/genre/[genre]/[offset]
+
+ - Consultar o catálogo de discos de forma paginada, filtrando por gênero e ordenando de forma crescente pelo nome do disco
+
+Exemplo: http://localhost/api/album/genre/[genre]/[offset]
+
+Response body:
+[
     {
-        "metadata": {
-            "resultset": {
-                "count": 123,
-                "offset": 0,
-                "limit": 10
-            }
+        "id": 1,
+        "spotify_id": "id do album no spotify",
+        "name": "Nome do album",
+        "artist": {
+            "id": null,
+            "spotify_id": "id do artista no spotify",
+            "name": "Nome do artista"
         },
-        "results": [
-            {
-                "id": "1234",
-                "type": "magazine",
-                "title": "Public Water Systems",
-                "tags": [
-                    {"id": "125", "name": "Environment"},
-                    {"id": "834", "name": "Water Quality"}
-                ],
-                "created": "1231621302"
-            },
-            {
-                "id": 2351,
-                "type": "magazine",
-                "title": "Public Schools",
-                "tags": [
-                    {"id": "125", "name": "Elementary"},
-                    {"id": "834", "name": "Charter Schools"}
-                ],
-                "created": "126251302"
-            }
-            {
-                "id": 2351,
-                "type": "magazine",
-                "title": "Public Schools",
-                "tags": [
-                    {"id": "125", "name": "Pre-school"},
-                ],
-                "created": "126251302"
-            }
-        ]
+        "genre": {
+            "id": null,
+            "name": "Nome do gênero"
+        },
+        "price": 0.00,
+        "created_at": now()
+    },
+    {
+        "id": 2,
+        "spotify_id": "id do album no spotify",
+        "name": "Nome do album",
+        "artist": {
+            "id": null,
+            "spotify_id": "id do artista no spotify",
+            "name": "Nome do artista"
+        },
+        "genre": {
+            "id": null,
+            "name": "Nome do gênero"
+        },
+        "price": 0.00,
+        "created_at": now()
     }
+]
 
 
-# Consultar o catálogo de discos de forma paginada, filtrando por gênero e ordenando de forma crescente pelo nome do disco;
-Method: GET
+### GET /album/genre/[genre]/[offset]
 
-http://localhost:8080/api/album/genre/mpb/0
-http://localhost:8080/api/album/genre/classic/0
-http://localhost:8080/api/album/genre/rock/0
-http://localhost:8080/api/album/genre/pop/0
+ - Consultar o disco pelo seu identificador
 
-# Consultar o disco pelo seu identificador;
-Method: GET
-http://localhost:8080/api/album/id/1
+Exemplo: http://localhost/api/album/id/[id]
 
-#Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range de datas (inicial e final) da venda e ordenando de forma decrescente pela data da venda;
+Response body:
+{
+    "id": null,
+    "spotify_id": "id do album no spotify",
+    "name": "Nome do album",
+    "artist": {
+        "id": null,
+        "spotify_id": "id do artista no spotify",
+        "name": "Nome do artista"
+    },
+    "genre": {
+        "id": null,
+        "name": "Nome do gênero"
+    },
+    "price": 0.00,
+    "created_at": now()
+} 
+
+### GET /order/find/
+
+ - Consultar todas as vendas efetuadas
+
+Exemplo: http://localhost/api/order/find/
+
+Response body:
+{
+    "status_code": 1,
+    "status": "info: list orders by range date",
+    "result": {
+        "total": 0,
+        "total_cashback": 0,
+        "ordersItems": []
+    }
+}
+
+Com resultados
+
+Response body:
+{
+    "status_code": 1,
+    "status": "info: list orders by range date",
+    "result": {
+        "total": 234.31,
+        "total_cashback": 0,
+        "ordersItems": [
+            {
+                "id": 3,
+                "order": {
+                    "id": 1,
+                    "user": {
+                        "id": 1,
+                        "name": "admin",
+                        "login": "admin",
+                        "created_at": 1549721442702
+                    },
+                    "created_at": 1549677600000
+                },
+                "album": {
+                    "id": 3,
+                    "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
+                    "name": "Grandes mestres da MPB",
+                    "artist": {
+                        "id": 3,
+                        "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
+                        "name": "Jorge Ben Jor"
+                    },
+                    "genre": {
+                        "id": 80,
+                        "name": "mpb"
+                    },
+                    "price": 85.15,
+                    "created_at": 1549721443468
+                },
+                "cashback_percent_log": 30,
+                "cashback": 0,
+                "cost": 85.15,
+                "created_at": 1549677600000
+            }
+    }
+}
+
+### GET /order/find/
+
+ - Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range de datas (inicial e final) da venda e ordenando de forma decrescente pela data da venda;
+
+Example: http://localhost/api/order/find/{"start_date":"01-01-1900","end_date":"01-01-1900"}
+
+Response body:
+{
+    "status_code": 1,
+    "status": "info: list orders by range date",
+    "result": {
+        "total": 234.31,
+        "total_cashback": 0,
+        "ordersItems": [
+            {
+                "id": 3,
+                "order": {
+                    "id": 1,
+                    "user": {
+                        "id": 1,
+                        "name": "admin",
+                        "login": "admin",
+                        "created_at": 1549721442702
+                    },
+                    "created_at": 1549677600000
+                },
+                "album": {
+                    "id": 3,
+                    "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
+                    "name": "Grandes mestres da MPB",
+                    "artist": {
+                        "id": 3,
+                        "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
+                        "name": "Jorge Ben Jor"
+                    },
+                    "genre": {
+                        "id": 80,
+                        "name": "mpb"
+                    },
+                    "price": 85.15,
+                    "created_at": 1549721443468
+                },
+                "cashback_percent_log": 30,
+                "cashback": 0,
+                "cost": 85.15,
+                "created_at": 1549677600000
+            }
+    }
+}
 
 Method: GET
 http://localhost:8080/api/order/find/{"start_date":"08-02-2019","end_date":"08-02-2019"}
