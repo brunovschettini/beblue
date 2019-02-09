@@ -55,10 +55,10 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
   - [GET /order/find/](#get-orderfind)
   - [GET /order/find/[query]](#get-orderfindquery)
   - [GET /order/id/[id]](#get-orderidid)
-  - [POST /order/add](#get-orderadd)
-  - [POST /order/add2](#get-orderadd2)
-  - [DELETE /order/delete](#get-orderdelete)
-  - [DELETE /order/item/delete](#get-orderitemdelete)
+  - [POST /order/add](#post-orderadd)
+  - [POST /order/add2](#post-orderadd2)
+  - [DELETE /order/delete](#delete-orderdelete)
+  - [DELETE /order/item/delete](#delete-orderitemdelete)
 
 ### GET /status
 
@@ -403,7 +403,7 @@ Resposta:
  
 ### POST /order/add
 
-    - Registrar uma nova venda de discos calculando o valor total de cashback considerando a tabela, para meus testes usei o POSTMAN
+ - Registrar uma nova venda de discos calculando o valor total de cashback considerando a tabela, para meus testes usei o POSTMAN
 
 Content-Type:
 
@@ -436,7 +436,50 @@ POST (raw format):
 
 Response:
 
-    {"status_code":1,"status":"success: order nº 2 registered","result":{"total":7.23,"total_cashback":1.81,"ordersItems":[{"id":6,"order":{"id":2,"user":{"id":1,"name":"admin","login":"admin","created_at":1549657735042,"hibernateLazyInitializer":{}},"created_at":1549657865776},"album":{"id":4,"spotify_id":"1X42b0NEC8OPNnPKcJJgIY","name":"10 Anos Depois","artist":{"id":1,"spotify_id":"3SKTkAUNa3oUa2rkd8DAyM","name":"MPB4"},"genre":{"id":80,"name":"mpb"},"price":7.23,"created_at":1549645694118},"cashback_percent_log":25.0,"cost":7.23,"created_at":1549657865784,"cashback":1.81}]}}
+    {
+        "status_code": 1,
+        "status": "success: order nº 2 registered",
+        "result": {
+            "total": 7.23,
+            "total_cashback": 2.17,
+            "ordersItems": [
+                {
+                    "id": 4,
+                    "order": {
+                        "id": 2,
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702,
+                            "hibernateLazyInitializer": {}
+                        },
+                        "created_at": 1549727996559
+                    },
+                    "album": {
+                        "id": 4,
+                        "spotify_id": "1X42b0NEC8OPNnPKcJJgIY",
+                        "name": "10 Anos Depois",
+                        "artist": {
+                            "id": 1,
+                            "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
+                            "name": "MPB4"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 7.23,
+                        "created_at": 1549645694118
+                    },
+                    "cashback_percent_log": 30,
+                    "cashback": 2.17,
+                    "cost": 7.23,
+                    "created_at": 1549727996586
+                }
+            ]
+        }
+    }
 
 # Cria uma orde de venda com items de albums
 Method: POST
