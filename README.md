@@ -2,7 +2,7 @@
 
 * [Considerações](#considerações)
 * [Desenvolvimento](#desenvolvimento)
-* [RESTful URLs](#restful-urls)
+* [Pedidos & Respostas](#pedidos-respostas)
 * [HTTP Verbs](#http-verbs)
 * [Responses](#responses)
 * [Error handling](#error-handling)
@@ -53,12 +53,61 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
   - [GET /album/genre/{genre}/{offset}](#get-albums)
   - [GET /album/id/{id}](#get-albums-id)
   - [GET /order/find/](#get-orders)
-  - [GET /order/find/]{query}(#get-orders-query)
+  - [GET /order/find/{query}](#get-orders-query)
   - [GET /order/id/{id}](#get-orders-id)
   - [POST /order/add](#get-orders-add)
   - [POST /order/add2](#get-orders-add2)
   - [DELETE /order/delete/{id}](#get-orders-delete)
   - [DELETE /order/item/delete/{id}](#get-orders-items-delete)
+
+
+### GET /magazines
+
+Example: http://localhost/api/status
+
+Response body:
+
+    {
+        "metadata": {
+            "resultset": {
+                "count": 123,
+                "offset": 0,
+                "limit": 10
+            }
+        },
+        "results": [
+            {
+                "id": "1234",
+                "type": "magazine",
+                "title": "Public Water Systems",
+                "tags": [
+                    {"id": "125", "name": "Environment"},
+                    {"id": "834", "name": "Water Quality"}
+                ],
+                "created": "1231621302"
+            },
+            {
+                "id": 2351,
+                "type": "magazine",
+                "title": "Public Schools",
+                "tags": [
+                    {"id": "125", "name": "Elementary"},
+                    {"id": "834", "name": "Charter Schools"}
+                ],
+                "created": "126251302"
+            }
+            {
+                "id": 2351,
+                "type": "magazine",
+                "title": "Public Schools",
+                "tags": [
+                    {"id": "125", "name": "Pre-school"},
+                ],
+                "created": "126251302"
+            }
+        ]
+    }
+
 
 # Consultar o catálogo de discos de forma paginada, filtrando por gênero e ordenando de forma crescente pelo nome do disco;
 Method: GET
