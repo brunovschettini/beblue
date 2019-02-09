@@ -22,7 +22,7 @@ Este documento fornece informações e exemplos para as API do desafio da Beblue
 
 Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring.
 
-* [Spring](https://start.spring.io
+* [Spring](https://start.spring.io)
 
 * JPA, REST, H2, mysql (não configurada como default), SpotifyAPI, Jackson, JSON e WEB
 
