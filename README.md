@@ -49,7 +49,7 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 ### API Recursos
 
   - [GET /status](#get-status)
-  - [GET /genres/](#get-genres) 
+  - [GET /genres](#get-genres) 
   - [GET /album/genre/[genre]/[offset]](#get-albumgenregenreoffset)
   - [GET /album/id/[id]](#get-albumsidid)
   - [GET /order/find/](#get-orderfind)
@@ -64,7 +64,9 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 
 Exemplo: http://localhost/api/status
 
-Response: HTTP 200 (OK)
+Response body:
+
+    [HTTP 200 (OK)]
 
 ### GET /genres
 
@@ -73,6 +75,7 @@ Response: HTTP 200 (OK)
 Exemplo: http://localhost/api/genres
 
 Response body:
+
     [
         {"id":1,"name":"classic"},
         {"id":2,"name":"acoustic"},
@@ -124,7 +127,7 @@ Response body:
     ]
 
 
-### GET /album/genre/[genre]/[offset]
+### GET /album/id/[id]
 
  - Consultar o disco pelo seu identificador
 
