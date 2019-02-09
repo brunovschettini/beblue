@@ -92,7 +92,7 @@ public class AlbumsResource {
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/album/spotify_id/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/album/spotify_id/{spotify_id}", method = RequestMethod.GET)
     public ResponseEntity<?> spotify_id(@PathVariable("spotify_id") String spotify_id) {
         Result result = new Result();
         if (spotify_id == null || spotify_id.isEmpty()) {
@@ -108,42 +108,4 @@ public class AlbumsResource {
         }
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
-//
-//    @GET
-//    @Path("/spotify_id/{spotify_id}/")
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public synchronized Response findBySpotifyId(@PathParam("spotify_id") String spotify_id) {
-//        try {
-//            if (spotify_id == null) {
-//                NotifyResponse nr = new NotifyResponse();
-//                nr.setStatus(0);
-//                nr.setResult(0);
-//                nr.setObject("Empty album id!");
-//                return Response.status(200).entity(new Gson().toJson(nr)).build();
-//            }
-//            Album album = new AlbumDao().findBySpotifyId(spotify_id);
-//            if (album == null) {
-//                NotifyResponse nr = new NotifyResponse();
-//                nr.setStatus(0);
-//                nr.setResult(0);
-//                nr.setObject("Album not found!");
-//                return Response.status(200).entity(new Gson().toJson(nr)).build();
-//            }
-//            SearchAlbumsRequest search = spotifyApi.searchAlbums(spotify_id + "")
-//                    .market(CountryCode.BR)
-//                    .limit(50)
-//                    .build();
-//            Paging<AlbumSimplified> result = search.execute();
-//            for (AlbumSimplified item : result.getItems()) {
-//
-//            }
-//            return Response.status(200).entity(new Gson().toJson(result.getItems())).build();
-//        } catch (IOException ex) {
-//            Logger.getLogger(AlbumsApi.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SpotifyWebApiException ex) {
-//            Logger.getLogger(AlbumsApi.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return Response.status(200).entity(new Gson().toJson("")).build();
-//    }
-
 }

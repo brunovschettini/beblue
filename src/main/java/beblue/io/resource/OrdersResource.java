@@ -76,9 +76,9 @@ public class OrdersResource {
         List<OrdersItems> ois = oir.findByOrder(id);
         BigDecimal total = new BigDecimal(0);
         BigDecimal total_cashback = new BigDecimal(0);
-        for (OrdersItems oi : ois) {
-            total_cashback = total_cashback.add(oi.getCashback());
-            total = total.add(oi.getCost());
+        for (OrdersItems oitems : ois) {
+            total_cashback = total_cashback.add(oitems.getCashback());
+            total = total.add(oitems.getCost());
         }
         OrderResult or = new OrderResult(total, total_cashback, ois);
 
@@ -127,8 +127,8 @@ public class OrdersResource {
         } else {
             JSONObject g = new JSONObject(q);
             if (g.getString("start_date") != null && g.getString("end_date") != null && !g.getString("start_date").isEmpty() && !g.getString("end_date").isEmpty()) {
-                Date sd = null;
-                Date ed = null;
+                Date sd;
+                Date ed;
                 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     sd = formato.parse(g.getString("start_date").replace("-", "/"));
@@ -148,9 +148,9 @@ public class OrdersResource {
         }
         BigDecimal total = new BigDecimal(0);
         BigDecimal total_cashback = new BigDecimal(0);
-        for (OrdersItems oi : ois) {
-            total_cashback = total_cashback.add(oi.getCashback());
-            total = total.add(oi.getCost());
+        for (OrdersItems oitems : ois) {
+            total_cashback = total_cashback.add(oitems.getCashback());
+            total = total.add(oitems.getCost());
         }
         OrderResult or = new OrderResult(total, total_cashback, ois);
         result.setStatus("info: list orders by range date");
@@ -205,23 +205,23 @@ public class OrdersResource {
             query.setParameter("genre_id", album.getGenre().getId());
             query.setParameter("week_id", weeks.getId());
             WeeksSales ws = (WeeksSales) query.getSingleResult();
-            OrdersItems oi = new OrdersItems();
-            oi.setAlbum(album);
-            oi.setOrder(orders);
-            oi.setCost(album.getPrice());
-            oi.setCashback_percent_log(ws.getPercent());
-            oi.setCashback(oi.calcCashback());
-            total_cashback = total_cashback.add(oi.getCashback());
-            total = total.add(oi.getCost());
+            OrdersItems ordersItems = new OrdersItems();
+            ordersItems.setAlbum(album);
+            ordersItems.setOrder(orders);
+            ordersItems.setCost(album.getPrice());
+            ordersItems.setCashback_percent_log(ws.getPercent());
+            ordersItems.setCashback(ordersItems.calcCashback());
+            total_cashback = total_cashback.add(ordersItems.getCashback());
+            total = total.add(ordersItems.getCost());
             try {
-                em.persist(oi);
+                em.persist(ordersItems);
                 em.flush();
             } catch (Exception e) {
                 result.setStatus_code(0);
                 result.setStatus("e->" + e.getMessage());
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
-            ois.add(oi);
+            ois.add(ordersItems);
         }
         em.getTransaction().commit();
         result.setStatus("success: order nº " + ois.get(0).getOrder().getId() + " registered");
@@ -286,22 +286,23 @@ public class OrdersResource {
             query.setParameter("genre_id", album.getGenre().getId());
             query.setParameter("week_id", weeks.getId());
             WeeksSales ws = (WeeksSales) query.getSingleResult();
-            OrdersItems oi = new OrdersItems();
-            oi.setAlbum(album);
-            oi.setOrder(orders);
-            oi.setCost(album.getPrice());
-            oi.setCashback_percent_log(ws.getPercent());
-            total_cashback = total_cashback.add(oi.getCashback());
-            total = total.add(oi.getCost());
+            OrdersItems ordersItems = new OrdersItems();
+            ordersItems.setAlbum(album);
+            ordersItems.setOrder(orders);
+            ordersItems.setCost(album.getPrice());
+            ordersItems.setCashback_percent_log(ws.getPercent());
+            ordersItems.setCashback(ordersItems.calcCashback());
+            total_cashback = total_cashback.add(ordersItems.getCashback());
+            total = total.add(ordersItems.getCost());
             try {
-                em.persist(oi);
+                em.persist(ordersItems);
                 em.flush();
             } catch (Exception e) {
                 result.setStatus_code(0);
                 result.setStatus("e->" + e.getMessage());
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
-            ois.add(oi);
+            ois.add(ordersItems);
         }
         em.getTransaction().commit();
         result.setStatus("success: order nº " + ois.get(0).getOrder().getId() + " registered");
