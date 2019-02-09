@@ -50,7 +50,7 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 
   - [GET /status](#get-status)
   - [GET /genres/](#get-genres) 
-  - [GET /album/genre/[genre]/[offset]](#get-albums)
+  - [GET /album/genre/[genre]/[offset]](#get-albumgenregenreoffset)
   - [GET /album/id/[id]](#get-albums-id)
   - [GET /order/find/](#get-orders)
   - [GET /order/find/[query]](#get-orders-query)
