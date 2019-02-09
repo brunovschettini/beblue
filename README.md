@@ -230,7 +230,7 @@ Resposta:
         }
     }
 
-### GET /order/find/
+### GET /order/find/[query]
 
  - Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range de datas (inicial e final) da venda e ordenando de forma decrescente pela data da venda;
 
