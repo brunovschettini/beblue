@@ -1,8 +1,43 @@
-# beblue
+# Beblue
 
-#Banco de Dados
+* [Considerações](#considerações)
+* [Pragmatic REST](#pragmatic-rest)
+* [RESTful URLs](#restful-urls)
+* [HTTP Verbs](#http-verbs)
+* [Responses](#responses)
+* [Error handling](#error-handling)
+* [Versions](#versions)
+* [Record limits](#record-limits)
+* [Request & Response Examples](#request--response-examples)
+* [Mock Responses](#mock-responses)
+* [JSONP](#jsonp)
 
+## Considerações
 
+Este documento fornece informações e exemplos para as API do desafio da Beblue.
+
+Para construir esse projeto utilizei as dependênicias disponibiizadas no site oficial do Spring.
+
+* [Spring](https://start.spring.io)
+
+A base de dados foi usada H2 (banco de dados em memória) para facilitar a construção e permitir um teste mais rápido com menas configurações.
+
+* [H2 Console](http://localhost/api/h2-console
+* [H2 Console](http://localhost:8080/api/h2-console/)
+
+Depois da primeira execução as entidades serão criadas no banco de dados.
+
+Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.SpotifyAuthorization.java, 
+assim que executar pela primeira vez esse irá reaizar uma conexão com a Api do Spotify e popular as tabelas
+criadas.
+
+Na sequência
+
+* 1: Weeks
+* 2: Genres
+* 3: WeeksSales (É a entidade que contêm os valores dos cashbacks + dias da semana + gênero músical)
+* 4: Users (Um usuário admin, criei de forma mas estrutural do que de fato usual)
+* 5: Albums (Cadastra os artistas para serem vínculados aos albúms, tem id único + o id do spotify para caso sejá necessário uma consulta mais detalhada)
 
 
 #Banco de Dados
