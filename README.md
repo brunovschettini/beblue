@@ -20,7 +20,7 @@ Para construir esse projeto utilizei as dependênicias disponibiizadas no site o
 
 * [Spring](https://start.spring.io)
 
-A base de dados foi usada H2 (banco de dados em memória) para facilitar a construção e permitir um teste mais rápido com menas configurações.
+A base de dados foi usada H2 (http://www.h2database.com) (banco de dados em memória) para facilitar a construção e permitir um teste mais rápido com menas configurações.
 
 * [H2 Console](http://localhost/api/h2-console
 * [H2 Console](http://localhost:8080/api/h2-console/)
