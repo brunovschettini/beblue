@@ -585,6 +585,5 @@ Resposta:
         "status": "success: item nº 1 removed",
         "result": null
     }
-## Comentários:
-
-Espero ter atingido o objetivo no teste, fiz uma documentação mais completa para facilitar o entendimento, quaisquer dúvidas estou a disposição.
+## Comentário:
+*Espero ter atingido o objetivo no teste, fiz uma documentação mais completa para facilitar o entendimento, quaisquer dúvidas estou a disposição.*
