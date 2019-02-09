@@ -16,11 +16,15 @@
 
 Este documento fornece informações e exemplos para as API do desafio da Beblue.
 
-Para construir esse projeto utilizei as dependênicias disponibiizadas no site oficial do Spring.
+Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring.
 
-* [Spring](https://start.spring.io)
+* [Spring](https://start.spring.io
 
-A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em memória) para facilitar a construção e permitir um teste mais rápido com menas configurações.
+### Dependências
+
+* JPA, REST, H2, mysql (não configurada como default), SpotifyAPI, Jackson, JSON, WEB
+
+A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em memória) para facilitar a construção (building) e permitir um teste mais rápido com menos configurações.
 
 * [H2 Console](http://localhost/api/h2-console)
 * [H2 Console](http://localhost:8080/api/h2-console/)
@@ -35,7 +39,7 @@ Na sequência
 
 * 1: Weeks
 * 2: Genres
-* 3: WeeksSales (É a entidade que contêm os valores dos cashbacks + dias da semana + gênero músical)
+* 3: WeeksSales (É a entidade que contêm os valores dos cashbacks + dias da semana + gênero musical)
 * 4: Users (Um usuário admin, criei de forma mas estrutural do que de fato usual)
 * 5: Albums (Cadastra os artistas para serem vínculados aos albúms, tem id único + o id do spotify para caso sejá necessário uma consulta mais detalhada)
 
