@@ -51,14 +51,14 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
   - [GET /status](#get-status)
   - [GET /genres/](#get-genres) 
   - [GET /album/genre/[genre]/[offset]](#get-albumgenregenreoffset)
-  - [GET /album/id/[id]](#get-albums-id)
-  - [GET /order/find/](#get-orders)
-  - [GET /order/find/[query]](#get-orders-query)
-  - [GET /order/id/[id]](#get-orders-id)
-  - [POST /order/add](#get-orders-add)
-  - [POST /order/add2](#get-orders-add2)
-  - [DELETE /order/delete/[id]](#get-orders-delete)
-  - [DELETE /order/item/delete/[id]](#get-orders-items-delete)
+  - [GET /album/id/[id]](#get-albumsidid)
+  - [GET /order/find/](#get-orderfind)
+  - [GET /order/find/[query]](#get-orderfindquery)
+  - [GET /order/id/[id]](#get-orderidid)
+  - [POST /order/add](#get-orderadd)
+  - [POST /order/add2](#get-orderadd2)
+  - [DELETE /order/delete](#get-orderdelete)
+  - [DELETE /order/item/delete](#get-orderitemdelete)
 
 ### GET /status
 
@@ -131,6 +131,7 @@ Response body:
 Exemplo: http://localhost/api/album/id/[id]
 
 Response body:
+
     {
         "id": null,
         "spotify_id": "id do album no spotify",
@@ -155,61 +156,63 @@ Response body:
 Exemplo: http://localhost/api/order/find/
 
 Response body:
-{
-    "status_code": 1,
-    "status": "info: list orders by range date",
-    "result": {
-        "total": 0,
-        "total_cashback": 0,
-        "ordersItems": []
+
+    {
+        "status_code": 1,
+        "status": "info: list orders by range date",
+        "result": {
+            "total": 0,
+            "total_cashback": 0,
+            "ordersItems": []
+        }
     }
-}
 
 Com resultados
 
 Response body:
-{
-    "status_code": 1,
-    "status": "info: list orders by range date",
-    "result": {
-        "total": 234.31,
-        "total_cashback": 0,
-        "ordersItems": [
-            {
-                "id": 3,
-                "order": {
-                    "id": 1,
-                    "user": {
-                        "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549721442702
-                    },
-                    "created_at": 1549677600000
-                },
-                "album": {
+
+    {
+        "status_code": 1,
+        "status": "info: list orders by range date",
+        "result": {
+            "total": 234.31,
+            "total_cashback": 0,
+            "ordersItems": [
+                {
                     "id": 3,
-                    "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
-                    "name": "Grandes mestres da MPB",
-                    "artist": {
+                    "order": {
+                        "id": 1,
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702
+                        },
+                        "created_at": 1549677600000
+                    },
+                    "album": {
                         "id": 3,
-                        "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
-                        "name": "Jorge Ben Jor"
+                        "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
+                        "name": "Grandes mestres da MPB",
+                        "artist": {
+                            "id": 3,
+                            "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
+                            "name": "Jorge Ben Jor"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 85.15,
+                        "created_at": 1549721443468
                     },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 85.15,
-                    "created_at": 1549721443468
-                },
-                "cashback_percent_log": 30,
-                "cashback": 0,
-                "cost": 85.15,
-                "created_at": 1549677600000
-            }
+                    "cashback_percent_log": 30,
+                    "cashback": 0,
+                    "cost": 85.15,
+                    "created_at": 1549677600000
+                }
+        }
     }
-}
 
 ### GET /order/find/
 
@@ -218,48 +221,49 @@ Response body:
 Example: http://localhost/api/order/find/{"start_date":"01-01-1900","end_date":"01-01-1900"}
 
 Response body:
-{
-    "status_code": 1,
-    "status": "info: list orders by range date",
-    "result": {
-        "total": 234.31,
-        "total_cashback": 0,
-        "ordersItems": [
-            {
-                "id": 3,
-                "order": {
-                    "id": 1,
-                    "user": {
-                        "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549721442702
-                    },
-                    "created_at": 1549677600000
-                },
-                "album": {
+
+    {
+        "status_code": 1,
+        "status": "info: list orders by range date",
+        "result": {
+            "total": 234.31,
+            "total_cashback": 0,
+            "ordersItems": [
+                {
                     "id": 3,
-                    "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
-                    "name": "Grandes mestres da MPB",
-                    "artist": {
+                    "order": {
+                        "id": 1,
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702
+                        },
+                        "created_at": 1549677600000
+                    },
+                    "album": {
                         "id": 3,
-                        "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
-                        "name": "Jorge Ben Jor"
+                        "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
+                        "name": "Grandes mestres da MPB",
+                        "artist": {
+                            "id": 3,
+                            "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
+                            "name": "Jorge Ben Jor"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 85.15,
+                        "created_at": 1549721443468
                     },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 85.15,
-                    "created_at": 1549721443468
-                },
-                "cashback_percent_log": 30,
-                "cashback": 0,
-                "cost": 85.15,
-                "created_at": 1549677600000
-            }
+                    "cashback_percent_log": 30,
+                    "cashback": 0,
+                    "cost": 85.15,
+                    "created_at": 1549677600000
+                }
+        }
     }
-}
 
 Method: GET
 http://localhost:8080/api/order/find/{"start_date":"08-02-2019","end_date":"08-02-2019"}
