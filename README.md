@@ -73,12 +73,12 @@ Response: HTTP 200 (OK)
 Exemplo: http://localhost/api/genres
 
 Response body:
-[
-    {"id":1,"name":"classic"},
-    {"id":2,"name":"acoustic"},
-    {"id":3,"name":"afrobeat"},
-    {"id":4,"name":"alt-rock"}
-]
+    [
+        {"id":1,"name":"classic"},
+        {"id":2,"name":"acoustic"},
+        {"id":3,"name":"afrobeat"},
+        {"id":4,"name":"alt-rock"}
+    ]
  
 
 ### GET /album/genre/[genre]/[offset]
@@ -88,40 +88,40 @@ Response body:
 Exemplo: http://localhost/api/album/genre/[genre]/[offset]
 
 Response body:
-[
-    {
-        "id": 1,
-        "spotify_id": "id do album no spotify",
-        "name": "Nome do album",
-        "artist": {
-            "id": null,
-            "spotify_id": "id do artista no spotify",
-            "name": "Nome do artista"
+    [
+        {
+            "id": 1,
+            "spotify_id": "id do album no spotify",
+            "name": "Nome do album",
+            "artist": {
+                "id": null,
+                "spotify_id": "id do artista no spotify",
+                "name": "Nome do artista"
+            },
+            "genre": {
+                "id": null,
+                "name": "Nome do gênero"
+            },
+            "price": 0.00,
+            "created_at": now()
         },
-        "genre": {
-            "id": null,
-            "name": "Nome do gênero"
-        },
-        "price": 0.00,
-        "created_at": now()
-    },
-    {
-        "id": 2,
-        "spotify_id": "id do album no spotify",
-        "name": "Nome do album",
-        "artist": {
-            "id": null,
-            "spotify_id": "id do artista no spotify",
-            "name": "Nome do artista"
-        },
-        "genre": {
-            "id": null,
-            "name": "Nome do gênero"
-        },
-        "price": 0.00,
-        "created_at": now()
-    }
-]
+        {
+            "id": 2,
+            "spotify_id": "id do album no spotify",
+            "name": "Nome do album",
+            "artist": {
+                "id": null,
+                "spotify_id": "id do artista no spotify",
+                "name": "Nome do artista"
+            },
+            "genre": {
+                "id": null,
+                "name": "Nome do gênero"
+            },
+            "price": 0.00,
+            "created_at": now()
+        }
+    ]
 
 
 ### GET /album/genre/[genre]/[offset]
@@ -131,22 +131,22 @@ Response body:
 Exemplo: http://localhost/api/album/id/[id]
 
 Response body:
-{
-    "id": null,
-    "spotify_id": "id do album no spotify",
-    "name": "Nome do album",
-    "artist": {
+    {
         "id": null,
-        "spotify_id": "id do artista no spotify",
-        "name": "Nome do artista"
-    },
-    "genre": {
-        "id": null,
-        "name": "Nome do gênero"
-    },
-    "price": 0.00,
-    "created_at": now()
-} 
+        "spotify_id": "id do album no spotify",
+        "name": "Nome do album",
+        "artist": {
+            "id": null,
+            "spotify_id": "id do artista no spotify",
+            "name": "Nome do artista"
+        },
+        "genre": {
+            "id": null,
+            "name": "Nome do gênero"
+        },
+        "price": 0.00,
+        "created_at": now()
+    } 
 
 ### GET /order/find/
 
