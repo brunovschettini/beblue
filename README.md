@@ -1,7 +1,7 @@
 # Beblue
 
 * [Considerações](#considerações)
-* [Pragmatic REST](#pragmatic-rest)
+* [Desenvolvimento](#desenvolvimento)
 * [RESTful URLs](#restful-urls)
 * [HTTP Verbs](#http-verbs)
 * [Responses](#responses)
@@ -16,13 +16,15 @@
 
 Este documento fornece informações e exemplos para as API do desafio da Beblue.
 
+* [Url da API](http://localhost:80/api/)
+
+## Desenvolvimento
+
 Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring.
 
 * [Spring](https://start.spring.io
 
-### Dependências
-
-* JPA, REST, H2, mysql (não configurada como default), SpotifyAPI, Jackson, JSON, WEB
+* JPA, REST, H2, mysql (não configurada como default), SpotifyAPI, Jackson, JSON e WEB
 
 A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em memória) para facilitar a construção (building) e permitir um teste mais rápido com menos configurações.
 
@@ -35,7 +37,7 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 assim que executar pela primeira vez esse irá reaizar uma conexão com a Api do Spotify e popular as tabelas
 criadas.
 
-Na sequência
+### Na sequência: 
 
 * 1: Weeks
 * 2: Genres
