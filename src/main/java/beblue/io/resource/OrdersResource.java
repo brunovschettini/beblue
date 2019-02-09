@@ -330,10 +330,16 @@ public class OrdersResource {
         Result result = new Result();
         if (id == null) {
             result.setStatus_code(0);
-            result.setStatus("empty order!");
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            result.setStatus("empty order id!");
+            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
         }
         Orders orders = oi.getOne(id);
+        if (orders == null) {
+            result.setStatus_code(0);
+            result.setStatus("empty order!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+
         List<OrdersItems> ois = oir.findByOrder(id);
         // EntityManager em = entityManager.getEntityManagerFactory().createEntityManager();
         // em.getTransaction().begin();
@@ -362,12 +368,17 @@ public class OrdersResource {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @RequestMapping(value = "/order/item/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete_item(@PathVariable("id") Long id) {
-        OrdersItems ordersItems = oir.getOne(id);
         Result result = new Result();
+        if (id == null) {
+            result.setStatus_code(0);
+            result.setStatus("empty item order id!");
+            return new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
+        }
+        OrdersItems ordersItems = oir.getOne(id);
         if (ordersItems == null) {
             result.setStatus_code(0);
-            result.setStatus("empty order!");
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            result.setStatus("empty item order!");
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         }
         try {
             oir.delete(ordersItems);
