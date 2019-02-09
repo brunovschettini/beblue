@@ -64,7 +64,7 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
 
 Exemplo: http://localhost/api/status
 
-Response body:
+Resposta:
 
     [HTTP 200 (OK)]
 
@@ -74,7 +74,7 @@ Response body:
 
 Exemplo: http://localhost/api/genres
 
-Response body:
+Resposta:
 
     [
         {"id":1,"name":"classic"},
@@ -90,7 +90,7 @@ Response body:
 
 Exemplo: http://localhost/api/album/genre/[genre]/[offset]
 
-Response body:
+Resposta:
 
     [
         {
@@ -134,7 +134,7 @@ Response body:
 
 Exemplo: http://localhost/api/album/id/[id]
 
-Response body:
+Resposta:
 
     {
         "id": null,
@@ -159,7 +159,7 @@ Response body:
 
 Exemplo: http://localhost/api/order/find/
 
-Response body:
+Resposta:
 
     {
         "status_code": 1,
@@ -173,7 +173,7 @@ Response body:
 
 Com resultados
 
-Response body:
+Resposta:
 
     {
         "status_code": 1,
@@ -224,7 +224,7 @@ Response body:
 
 Example: http://localhost/api/order/find/{"start_date":"01-01-1900","end_date":"01-01-1900"}
 
-Response body:
+Resposta:
 
     {
         "status_code": 1,
@@ -266,196 +266,130 @@ Response body:
                     "cost": 85.15,
                     "created_at": 1549677600000
                 }
+            ]
         }
     }
+ 
 
-Method: GET
-http://localhost:8080/api/order/find/{"start_date":"08-02-2019","end_date":"08-02-2019"}
+### GET /order/id/[id]
 
-Method: GET
-http://localhost:8080/api/order/find/
+ - Consultar uma venda pelo seu identificador
 
+Example: http://localhost/api/order/id/[id]
 
-{
-    "status_code": 1,
-    "status": "info: list orders by range date",
-    "result": {
-        "total": 309.08,
-        "total_cashback": 0,
-        "ordersItems": [
-            {
-                "id": 4,
-                "order": {
+Resposta:
+
+    {
+        "status_code": 1,
+        "status": "info: order nº 1",
+        "result": {
+            "total": 234.31,
+            "total_cashback": 0,
+            "ordersItems": [
+                {
                     "id": 1,
-                    "user": {
+                    "order": {
                         "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549660551939
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702
+                        },
+                        "created_at": 1549677600000
                     },
-                    "created_at": 1549591200000
-                },
-                "album": {
-                    "id": 4,
-                    "spotify_id": "1X42b0NEC8OPNnPKcJJgIY",
-                    "name": "10 Anos Depois",
-                    "artist": {
+                    "album": {
                         "id": 1,
-                        "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
-                        "name": "MPB4"
+                        "spotify_id": "4gjq4aTa0Y4rbxCG5J4bSy",
+                        "name": "O Sonho, a Vida, a Roda Viva! 50 Anos (Ao Vivo)",
+                        "artist": {
+                            "id": 1,
+                            "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
+                            "name": "MPB4"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 67.61,
+                        "created_at": 1549721443376
                     },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 83.77,
-                    "created_at": 1549660552340
+                    "cashback_percent_log": 30,
+                    "cashback": 0,
+                    "cost": 67.61,
+                    "created_at": 1549677600000
                 },
-                "cashback_percent_log": 25,
-                "cashback": 0,
-                "cost": 83.77,
-                "created_at": 1549591200000
-            },
-            {
-                "id": 3,
-                "order": {
-                    "id": 1,
-                    "user": {
-                        "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549660551939
-                    },
-                    "created_at": 1549591200000
-                },
-                "album": {
-                    "id": 3,
-                    "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
-                    "name": "Grandes mestres da MPB",
-                    "artist": {
-                        "id": 3,
-                        "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
-                        "name": "Jorge Ben Jor"
-                    },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 32.88,
-                    "created_at": 1549660552336
-                },
-                "cashback_percent_log": 25,
-                "cashback": 0,
-                "cost": 32.88,
-                "created_at": 1549591200000
-            },
-            {
-                "id": 1,
-                "order": {
-                    "id": 1,
-                    "user": {
-                        "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549660551939
-                    },
-                    "created_at": 1549591200000
-                },
-                "album": {
-                    "id": 1,
-                    "spotify_id": "4gjq4aTa0Y4rbxCG5J4bSy",
-                    "name": "O Sonho, a Vida, a Roda Viva! 50 Anos (Ao Vivo)",
-                    "artist": {
-                        "id": 1,
-                        "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
-                        "name": "MPB4"
-                    },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 70.42,
-                    "created_at": 1549660552318
-                },
-                "cashback_percent_log": 25,
-                "cashback": 0,
-                "cost": 70.42,
-                "created_at": 1549591200000
-            },
-            {
-                "id": 2,
-                "order": {
-                    "id": 1,
-                    "user": {
-                        "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549660551939
-                    },
-                    "created_at": 1549591200000
-                },
-                "album": {
+                {
                     "id": 2,
-                    "spotify_id": "26Vd2zx3iCZVRHoCalDqXF",
-                    "name": "The Best of Brazilian MPB",
-                    "artist": {
+                    "order": {
+                        "id": 1,
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702
+                        },
+                        "created_at": 1549677600000
+                    },
+                    "album": {
                         "id": 2,
-                        "spotify_id": "0LyfQWJT6nXafLPZqxe9Of",
-                        "name": "Various Artists"
+                        "spotify_id": "26Vd2zx3iCZVRHoCalDqXF",
+                        "name": "The Best of Brazilian MPB",
+                        "artist": {
+                            "id": 2,
+                            "spotify_id": "0LyfQWJT6nXafLPZqxe9Of",
+                            "name": "Various Artists"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 81.55,
+                        "created_at": 1549721443460
                     },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 48.76,
-                    "created_at": 1549660552318
+                    "cashback_percent_log": 30,
+                    "cashback": 0,
+                    "cost": 81.55,
+                    "created_at": 1549677600000
                 },
-                "cashback_percent_log": 25,
-                "cashback": 0,
-                "cost": 48.76,
-                "created_at": 1549591200000
-            },
-            {
-                "id": 5,
-                "order": {
-                    "id": 1,
-                    "user": {
+                {
+                    "id": 3,
+                    "order": {
                         "id": 1,
-                        "name": "admin",
-                        "login": "admin",
-                        "created_at": 1549660551939
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702
+                        },
+                        "created_at": 1549677600000
                     },
-                    "created_at": 1549591200000
-                },
-                "album": {
-                    "id": 5,
-                    "spotify_id": "6mk3ZqOD5nHn3zYo1TzPmg",
-                    "name": "Vozes Do Magro",
-                    "artist": {
-                        "id": 1,
-                        "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
-                        "name": "MPB4"
+                    "album": {
+                        "id": 3,
+                        "spotify_id": "3wvoawKuMJw5ROGw92BS4X",
+                        "name": "Grandes mestres da MPB",
+                        "artist": {
+                            "id": 3,
+                            "spotify_id": "5JYtpnUKxAzXfHEYpOeeit",
+                            "name": "Jorge Ben Jor"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 85.15,
+                        "created_at": 1549721443468
                     },
-                    "genre": {
-                        "id": 80,
-                        "name": "mpb"
-                    },
-                    "price": 73.25,
-                    "created_at": 1549660552342
-                },
-                "cashback_percent_log": 25,
-                "cashback": 0,
-                "cost": 73.25,
-                "created_at": 1549591200000
-            }
-        ]
+                    "cashback_percent_log": 30,
+                    "cashback": 0,
+                    "cost": 85.15,
+                    "created_at": 1549677600000
+                }
+            ]
+        }
     }
-}
-
-
-#Consultar uma venda pelo seu identificador;
-Method: GET
-http://localhost:8080/api/order/id/1
+ 
+  
 
 #Registrar uma nova venda de discos calculando o valor total de cashback considerando a tabela.
 Method: POST
