@@ -66,7 +66,7 @@ Exemplo: http://localhost/api/status
 
 Resposta:
 
-    [HTTP 200 (OK)]
+ - 200 - OK
 
 ### GET /genres
 
