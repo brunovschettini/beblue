@@ -91,6 +91,7 @@ Response body:
 Exemplo: http://localhost/api/album/genre/[genre]/[offset]
 
 Response body:
+
     [
         {
             "id": 1,
