@@ -3,14 +3,8 @@
 * [Considerações](#considerações)
 * [Desenvolvimento](#desenvolvimento)
 * [Pedidos & Respostas](#pedidos--respostas)
-* [HTTP Verbs](#http-verbs)
-* [Responses](#responses)
-* [Error handling](#error-handling)
-* [Versions](#versions)
-* [Record limits](#record-limits)
-* [Request & Response Examples](#request--response-examples)
-* [Mock Responses](#mock-responses)
-* [JSONP](#jsonp)
+* [Comentários](#comentarios)
+
 
 ## Considerações
 
@@ -30,7 +24,7 @@ A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em mem
 
 * [H2 Console](http://localhost/api/h2-console) ou [8080](http://localhost:8080/api/h2-console/)
 
-O Tomcat (Versão 8.5) foi usado como o container da aplicação.
+O [Tomcat](https://tomcat.apache.org/download-80.cgi#8.5.37) (Versão 8.5) foi usado como o container da aplicação.
 
 Depois da primeira execução as entidades serão criadas no banco de dados.
 
@@ -235,6 +229,11 @@ Resposta:
  - Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range de datas (inicial e final) da venda e ordenando de forma decrescente pela data da venda;
 
 Example: http://localhost/api/order/find/{"start_date":"01-01-1900","end_date":"01-01-1900"}
+
+| PARAMETER   | TYPE      | FORMAT      |
+| ----------- | --------- | ----------- |
+| start_date  | String    | 01-01-1900  |
+| end_date    | String    | 01-01-1900  |
 
 Resposta:
 
@@ -586,3 +585,6 @@ Resposta:
         "status": "success: item nº 1 removed",
         "result": null
     }
+## Comentários:
+
+Espero ter atingido o objetivo no teste, fiz uma documentação mais completa para facilitar o entendimento, quaisquer dúvidas estou a disposição.
