@@ -434,7 +434,15 @@ POST (raw format):
         }
     ]
 
-Response:
+Resposta (Com erro) e o apresenta a exceção gerada pela api. Se status_code = 0 identifica que houve algum erro:
+
+    {
+        "status_code": 0,
+        "status": "e->org.hibernate.exception.ConstraintViolationException: could not execute statement",
+        "result": null
+    }
+
+Resposta (200 - OK):
 
     {
         "status_code": 1,
@@ -481,13 +489,75 @@ Response:
         }
     }
 
-# Cria uma orde de venda com items de albums
-Method: POST
-http://localhost:8080/api/order/add2  
-Content-Type: application/x-www-form-urlencoded
-Param: albums_id
-Values: [1,2,3,4,5] 
+### POST /order/add2
 
+ -  Cria uma order de venda com items de albums, esse formato usa um post simples enviado de um exemplo:
+
+    <form method="POST" action="/order/add2">
+        <input name="albums" value="[1,2,3]">
+        <input type="submit">
+    </form>
+
+Content-Type:
+
+    x-www-form-urlencodeed
+
+Charset:
+    
+    UTF-8
+
+Param:
+    
+    key: albums_id
+    value: [1,2,3] 
+
+Resposta (200 - OK):
+
+    {
+        "status_code": 1,
+        "status": "success: order nº 2 registered",
+        "result": {
+            "total": 7.23,
+            "total_cashback": 2.17,
+            "ordersItems": [
+                {
+                    "id": 4,
+                    "order": {
+                        "id": 2,
+                        "user": {
+                            "id": 1,
+                            "name": "admin",
+                            "login": "admin",
+                            "created_at": 1549721442702,
+                            "hibernateLazyInitializer": {}
+                        },
+                        "created_at": 1549727996559
+                    },
+                    "album": {
+                        "id": 4,
+                        "spotify_id": "1X42b0NEC8OPNnPKcJJgIY",
+                        "name": "10 Anos Depois",
+                        "artist": {
+                            "id": 1,
+                            "spotify_id": "3SKTkAUNa3oUa2rkd8DAyM",
+                            "name": "MPB4"
+                        },
+                        "genre": {
+                            "id": 80,
+                            "name": "mpb"
+                        },
+                        "price": 7.23,
+                        "created_at": 1549645694118
+                    },
+                    "cashback_percent_log": 30,
+                    "cashback": 2.17,
+                    "cost": 7.23,
+                    "created_at": 1549727996586
+                }
+            ]
+        }
+    }
+ 
 # Extras - Excluir uma ordem de venda
 Method: DELETE
 http://localhost:8080/api/order/delete/

@@ -165,7 +165,7 @@ public class OrdersResource {
         }
         try {
             Result r = mapper.readValue(someJsonString, Result.class);
-            return new ResponseEntity<>(r, HttpStatus.OK);
+            return new ResponseEntity<>(r, HttpStatus.CREATED);
         } catch (IOException ex) {
             Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -237,7 +237,7 @@ public class OrdersResource {
         }
         try {
             Result r = mapper.readValue(someJsonString, Result.class);
-            return new ResponseEntity<>(r, HttpStatus.OK);
+            return new ResponseEntity<>(r, HttpStatus.CREATED);
         } catch (IOException ex) {
             Logger.getLogger(OrdersResource.class.getName()).log(Level.SEVERE, null, ex);
         }
