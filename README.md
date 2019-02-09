@@ -20,7 +20,7 @@ Este documento fornece informações e exemplos para as API do desafio da Beblue
 
 ## Desenvolvimento
 
-Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring.
+Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring, o desevolvimento foi feito usando as IDEs Netbeans e Spring Tools Suite
 
 * [Spring](https://start.spring.io)
 
@@ -28,14 +28,13 @@ Para construir esse projeto utilizei as dependênicias disponibilizadas no site 
 
 A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em memória) para facilitar a construção (building) e permitir um teste mais rápido com menos configurações.
 
-* [H2 Console](http://localhost/api/h2-console)
-* [H2 Console](http://localhost:8080/api/h2-console/)
+* [H2 Console](http://localhost/api/h2-console) ou [8080](http://localhost:8080/api/h2-console/)
+
+O Tomcat (Versão 8.5) foi usado como o container da aplicação.
 
 Depois da primeira execução as entidades serão criadas no banco de dados.
 
-Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.SpotifyAuthorization.java, 
-assim que executar pela primeira vez esse irá reaizar uma conexão com a Api do Spotify e popular as tabelas
-criadas.
+Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.SpotifyAuthorization.java, assim que executar pela primeira vez esse irá reaizar uma conexão com a Api do Spotify e popular as tabelas criadas.
 
 ### Na sequência: 
 
@@ -45,9 +44,21 @@ criadas.
 * 4: Users (Um usuário admin, criei de forma mas estrutural do que de fato usual)
 * 5: Albums (Cadastra os artistas para serem vínculados aos albúms, tem id único + o id do spotify para caso sejá necessário uma consulta mais detalhada)
 
+## Pedidos & Respostas
 
-#Banco de Dados
+### API Recursos
 
+  - [GET /status](#get-status)
+  - [GET /genres/](#get-genres) 
+  - [GET /album/genre/{genre}/{offset}](#get-albums)
+  - [GET /album/id/{id}](#get-albums-id)
+  - [GET /order/find/](#get-orders)
+  - [GET /order/find/]{query}(#get-orders-query)
+  - [GET /order/id/{id}](#get-orders-id)
+  - [POST /order/add](#get-orders-add)
+  - [POST /order/add2](#get-orders-add2)
+  - [DELETE /order/delete/{id}](#get-orders-delete)
+  - [DELETE /order/item/delete/{id}](#get-orders-items-delete)
 
 # Consultar o catálogo de discos de forma paginada, filtrando por gênero e ordenando de forma crescente pelo nome do disco;
 Method: GET
