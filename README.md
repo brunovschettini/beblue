@@ -24,6 +24,12 @@ A base de dados foi usada [H2](http://www.h2database.com) (banco de dados em mem
 
 * [H2 Console](http://localhost/api/h2-console) ou [8080](http://localhost:8080/api/h2-console/)
 
+### H2 Configuração
+Driver Class: org.h2.Driver
+JDBC URL: jdbc:h2:mem:testdb
+User Name: sa
+Password:
+
 O [Tomcat](https://tomcat.apache.org/download-80.cgi#8.5.37) (Versão 8.5) foi usado como o container da aplicação.
 
 Depois da primeira execução as entidades serão criadas no banco de dados.
@@ -46,6 +52,7 @@ Há um CLIENT_ID e CLIENT_SECRET do spotify fixado no arquivo beblue.io.auth.Spo
   - [GET /genres](#get-genres) 
   - [GET /album/genre/[genre]/[offset]](#get-albumgenregenreoffset)
   - [GET /album/id/[id]](#get-albumidid)
+  - [GET /album/spotify_id/[spotify_id]](#get-albumspotify_idspotify_id)
   - [GET /order/find/](#get-orderfind)
   - [GET /order/find/[query]](#get-orderfindquery)
   - [GET /order/id/[id]](#get-orderidid)
@@ -137,6 +144,31 @@ Resposta:
 ### GET /album/id/[id]
 
  - Consultar o disco pelo seu identificador
+
+Exemplo: http://localhost/api/album/id/[id]
+
+Resposta:
+
+    {
+        "id": null,
+        "spotify_id": "id do album no spotify",
+        "name": "Nome do album",
+        "artist": {
+            "id": null,
+            "spotify_id": "id do artista no spotify",
+            "name": "Nome do artista"
+        },
+        "genre": {
+            "id": null,
+            "name": "Nome do gênero"
+        },
+        "price": 0.00,
+        "created_at": now()
+    } 
+
+### GET /album/spotify_id/[spotify_id]
+
+ - Consultar o disco pelo identificador do spotify
 
 Exemplo: http://localhost/api/album/id/[id]
 
