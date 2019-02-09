@@ -77,10 +77,22 @@ Exemplo: http://localhost/api/genres
 Resposta:
 
     [
-        {"id":1,"name":"classic"},
-        {"id":2,"name":"acoustic"},
-        {"id":3,"name":"afrobeat"},
-        {"id":4,"name":"alt-rock"}
+        {
+            "id": 1,
+            "name": "classic"
+        },
+        {
+            "id": 2,
+            "name": "acoustic"
+        },
+        {
+            "id": 3,
+            "name": "afrobeat"
+        },
+        {
+            "id": 4,
+            "name": "alt-rock"
+        }
     ]
  
 
