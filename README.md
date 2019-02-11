@@ -14,7 +14,7 @@ Este documento fornece informações e exemplos para as API do desafio da Beblue
 
 ## Desenvolvimento
 
-Para construir esse projeto utilizei as dependênicias disponibilizadas no site oficial do Spring, o desevolvimento foi feito usando as IDEs Netbeans e Spring Tools Suite
+Para construir esse projeto utilizei as dependências disponibilizadas no site oficial do Spring, o desenvolvimento foi feito usando as IDEs Netbeans e Spring Tools Suite
 
 * [Spring](https://start.spring.io)
 
