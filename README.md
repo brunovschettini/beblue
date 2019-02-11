@@ -524,14 +524,14 @@ Resposta (200 - OK):
 
  -  Cria uma order de venda com items de albums, esse formato usa um post simples enviado de um exemplo:
 
-    <form method="POST" action="/order/add2">
-        <input name="albums" value="[1,2,3]">
-        <input type="submit">
-    </form>
+    < form method = " POST " action = " /order/add2 " >
+        < input name = " albums " value = " [1, 2, 3] ">
+        < input type = " submit " >
+    < / form >
 
 Content-Type:
 
-    x-www-form-urlencodeed
+    x-www-form-urlencoded
 
 Charset:
     
