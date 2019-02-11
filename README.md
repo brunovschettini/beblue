@@ -217,8 +217,8 @@ Resposta:
         "status_code": 1,
         "status": "info: list orders by range date",
         "result": {
-            "total": 234.31,
-            "total_cashback": 0,
+            "total": 85.15,
+            "total_cashback": 25.54,
             "ordersItems": [
                 {
                     "id": 3,
@@ -249,7 +249,7 @@ Resposta:
                         "created_at": 1549721443468
                     },
                     "cashback_percent_log": 30,
-                    "cashback": 0,
+                    "cashback": 25.54,
                     "cost": 85.15,
                     "created_at": 1549677600000
                 }
@@ -273,8 +273,8 @@ Resposta:
         "status_code": 1,
         "status": "info: list orders by range date",
         "result": {
-            "total": 234.31,
-            "total_cashback": 0,
+            "total": 85.15,
+            "total_cashback": 25.54,
             "ordersItems": [
                 {
                     "id": 3,
@@ -305,7 +305,7 @@ Resposta:
                         "created_at": 1549721443468
                     },
                     "cashback_percent_log": 30,
-                    "cashback": 0,
+                    "cashback": 25.54,
                     "cost": 85.15,
                     "created_at": 1549677600000
                 }
@@ -327,7 +327,7 @@ Resposta:
         "status": "info: order nº 1",
         "result": {
             "total": 234.31,
-            "total_cashback": 0,
+            "total_cashback": 70.28,
             "ordersItems": [
                 {
                     "id": 1,
@@ -358,7 +358,7 @@ Resposta:
                         "created_at": 1549721443376
                     },
                     "cashback_percent_log": 30,
-                    "cashback": 0,
+                    "cashback": 20.28,
                     "cost": 67.61,
                     "created_at": 1549677600000
                 },
@@ -391,7 +391,7 @@ Resposta:
                         "created_at": 1549721443460
                     },
                     "cashback_percent_log": 30,
-                    "cashback": 0,
+                    "cashback": 24.46,
                     "cost": 81.55,
                     "created_at": 1549677600000
                 },
@@ -424,7 +424,7 @@ Resposta:
                         "created_at": 1549721443468
                     },
                     "cashback_percent_log": 30,
-                    "cashback": 0,
+                    "cashback": 25.54,
                     "cost": 85.15,
                     "created_at": 1549677600000
                 }
@@ -444,7 +444,7 @@ Charset:
     
     UTF-8
 
-POST (raw format):
+POST (raw format JSON):
 
     [
         {
