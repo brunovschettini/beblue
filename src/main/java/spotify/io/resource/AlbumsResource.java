@@ -1,5 +1,6 @@
 package spotify.io.resource;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,10 @@ import spotify.io.model.Genres;
 import spotify.io.utils.Result;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import spotify.io.repository.AlbumsRepository;
 import spotify.io.repository.ArtistsRepository;
 import spotify.io.repository.GenresRepository;
-import org.hibernate.boot.model.source.spi.Sortable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 @RestController
 // @RequestMapping(path="/api")
@@ -62,10 +60,10 @@ public class AlbumsResource {
             offset = 0;
         }
         if (name.toLowerCase().equals("mpb") || name.toLowerCase().equals("rock") || name.toLowerCase().equals("pop") || name.toLowerCase().equals("classic")) {
-            PageRequest pageRequest = PageRequest.of(offset, 50, Sort.by(Sort.Direction.ASC, "name"));
-            Page<Albums> listAlbum = albumRepository.findAll(pageRequest);
-            // Query q = em.createNativeQuery("SELECT A.* FROM albums A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Albums.class);
-            // List<Albums> listAlbum = q.getResultList();
+            // PageRequest pageRequest = PageRequest.of(offset, 50, Sort.by(Sort.Direction.ASC, "name"));
+            // Page<Albums> listAlbum = albumRepository.findAll(pageRequest);
+            Query q = em.createNativeQuery("SELECT A.* FROM albums A WHERE A.genre_id = " + genre.getId() + " ORDER BY A.name LIMIT 50 OFFSET " + offset, Albums.class);
+            List<Albums> listAlbum = q.getResultList();
             if (listAlbum.isEmpty()) {
                 result.setStatus("empty albums!");
             }
